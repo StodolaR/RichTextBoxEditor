@@ -1,0 +1,53 @@
+﻿<Window x:Class="RichTextBoxEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RichTextBoxEditor"
+        mc:Ignorable="d"
+        Title="Beze jména" WindowState="Maximized">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Soubor">
+                <MenuItem Header="Nový"/>
+                <MenuItem Header="Otevřít"/>
+                <MenuItem Header="Poslední dokumenty"/>
+                <Separator/>
+                <MenuItem Header="Uložit"/>
+                <MenuItem Header="Uložit jako"/>
+                <Separator/>
+                <MenuItem Header="Vlastnosti"/>
+                <Separator/>
+                <MenuItem Header="Ukončit"/>
+            </MenuItem>
+            <MenuItem Header="Úpravy">
+                <MenuItem Header="Zpět"/>
+                <MenuItem Header="Vpřed"/>
+                <Separator/>
+                <MenuItem Header="Vyjmout"/>
+                <MenuItem Header="Kopírovat"/>
+                <MenuItem Header="Vložit"/>
+                <Separator/>
+                <MenuItem Header="Vybrat vše"/>
+                <Separator/>
+                <MenuItem Header="Najít"/>
+                <MenuItem Header="Nahradit"/>
+            </MenuItem>
+            <MenuItem Header="Formát">
+                <MenuItem Header="Písmo">
+                    <MenuItem Header="Tučné"/>
+                    <MenuItem Header="Kurzíva"/>
+                    <MenuItem Header="Podtržené"/>
+                    <Separator/>
+                    <MenuItem Header="Barva"/>
+                </MenuItem>
+                <MenuItem Header="Zarovnání">
+                    <MenuItem Header="Vlevo"/>
+                    <MenuItem Header="Na střed"/>
+                    <MenuItem Header="Vpravo"/>
+                    <MenuItem Header="Do bloku"/>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+    </DockPanel>
+</Window>
