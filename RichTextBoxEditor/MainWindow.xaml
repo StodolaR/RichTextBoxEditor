@@ -5,47 +5,147 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RichTextBoxEditor"
         mc:Ignorable="d"
-        Title="Beze jména" WindowState="Maximized">
+        Title="Bez názvu" Width="800" Height="600" WindowState="Maximized">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
+            <Menu.Resources>
+                <Style TargetType="Image">
+                    <Setter Property="Width" Value="15"/>
+                </Style>
+                <Style TargetType="MenuItem">
+                    <Setter Property="FontSize" Value="14"/>
+                </Style>
+            </Menu.Resources>
             <MenuItem Header="Soubor">
-                <MenuItem Header="Nový"/>
-                <MenuItem Header="Otevřít"/>
-                <MenuItem Header="Poslední dokumenty"/>
+                <MenuItem Header="Nový">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/New.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Otevřít">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/OpenFolder.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Poslední dokumenty">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/Last.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator/>
-                <MenuItem Header="Uložit"/>
-                <MenuItem Header="Uložit jako"/>
+                <MenuItem Header="Uložit">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/Save.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Uložit jako">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/SaveAs.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator/>
-                <MenuItem Header="Vlastnosti"/>
+                <MenuItem Header="Vlastnosti">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/Properties.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator/>
-                <MenuItem Header="Ukončit"/>
+                <MenuItem Header="Ukončit">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/Close.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Úpravy">
-                <MenuItem Header="Zpět"/>
-                <MenuItem Header="Vpřed"/>
+                <MenuItem Header="Zpět">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/Undo.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Vpřed">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/Redo.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator/>
-                <MenuItem Header="Vyjmout"/>
-                <MenuItem Header="Kopírovat"/>
-                <MenuItem Header="Vložit"/>
+                <MenuItem Header="Vyjmout">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/Cut.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Kopírovat">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/Copy.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Vložit">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/Paste.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator/>
-                <MenuItem Header="Vybrat vše"/>
+                <MenuItem Header="Vybrat vše">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/SelectAll.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator/>
-                <MenuItem Header="Najít"/>
-                <MenuItem Header="Nahradit"/>
+                <MenuItem Header="Najít">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/Find.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Nahradit">
+                    <MenuItem.Icon>
+                        <Image Source="/Resources/Icons/Replace.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Formát">
                 <MenuItem Header="Písmo">
-                    <MenuItem Header="Tučné"/>
-                    <MenuItem Header="Kurzíva"/>
-                    <MenuItem Header="Podtržené"/>
+                    <MenuItem Header="Tučné">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/Icons/Bold.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Kurzíva">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/Icons/Italic.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Podtržené">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/Icons/Underline.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <Separator/>
-                    <MenuItem Header="Barva"/>
+                    <MenuItem Header="Barva">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/Icons/TextColor.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Zarovnání">
-                    <MenuItem Header="Vlevo"/>
-                    <MenuItem Header="Na střed"/>
-                    <MenuItem Header="Vpravo"/>
-                    <MenuItem Header="Do bloku"/>
+                    <MenuItem Header="Vlevo">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/Icons/AlignLeft.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Na střed">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/Icons/AlignCenter.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Vpravo">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/Icons/AlignRight.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Do bloku">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/Icons/AlignJustify.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
             </MenuItem>
         </Menu>
