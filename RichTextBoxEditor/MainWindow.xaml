@@ -223,7 +223,12 @@
                 <Image Source="/Resources/Icons/AlignJustify.png"/>
             </Button>
         </ToolBar>
-        <RichTextBox>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock x:Name="tbCursorPosition" Text="0/0"/>
+            </StatusBarItem>
+        </StatusBar>
+        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto">
             <RichTextBox.Resources>
                 <Style TargetType="Paragraph">
                     <Setter Property="Margin" Value="0"/>
