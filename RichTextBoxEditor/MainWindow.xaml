@@ -223,6 +223,12 @@
                 <Image Source="/Resources/Icons/AlignJustify.png"/>
             </Button>
         </ToolBar>
-        <RichTextBox/>
+        <RichTextBox>
+            <RichTextBox.Resources>
+                <Style TargetType="Paragraph">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
     </DockPanel>
 </Window>
