@@ -6,7 +6,12 @@
         xmlns:local="clr-namespace:RichTextBoxEditor"
         mc:Ignorable="d"
         Title="Bez názvu" Width="800" Height="450" WindowState="Maximized" 
-        Icon="/Resources/Icons/RTBEditor.ico">
+        Icon="/Resources/Icons/RTBEditor.ico" x:Name="mainWindow">
+    <Window.CommandBindings>
+        <CommandBinding x:Name="cbNew" Command="ApplicationCommands.New" CanExecute="cbNew_CanExecute" Executed="cbNew_Executed"/>
+        <CommandBinding x:Name="cbOpen" Command="ApplicationCommands.Open" CanExecute="cbOpen_CanExecute" Executed="cbOpen_Executed"/>
+        <CommandBinding x:Name="cbSave" Command="ApplicationCommands.Save" CanExecute="cbSave_CanExecute" Executed="cbSave_Executed"/>
+    </Window.CommandBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <Menu.Resources>
@@ -18,12 +23,12 @@
                 </Style>
             </Menu.Resources>
             <MenuItem Header="Soubor">
-                <MenuItem Header="Nový">
+                <MenuItem Header="Nový" Command="ApplicationCommands.New">
                     <MenuItem.Icon>
                         <Image Source="/Resources/Icons/New.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Otevřít">
+                <MenuItem Header="Otevřít" Command="ApplicationCommands.Open">
                     <MenuItem.Icon>
                         <Image Source="/Resources/Icons/OpenFolder.png"/>
                     </MenuItem.Icon>
@@ -34,7 +39,7 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Uložit">
+                <MenuItem Header="Uložit" Command="ApplicationCommands.Save">
                     <MenuItem.Icon>
                         <Image Source="/Resources/Icons/Save.png"/>
                     </MenuItem.Icon>
@@ -156,21 +161,21 @@
                     <Setter Property="Width" Value="20"/>
                 </Style>
             </ToolBar.Resources>
-            <Button x:Name="btnNew" ToolTip="Nový">
+            <Button x:Name="btnNew" ToolTip="Nový (Ctrl+N)" Command="ApplicationCommands.New">
                 <Image Source="/Resources/Icons/New.png"/>
             </Button>
-            <Button x:Name="btnOpen" ToolTip="Otevřít">
+            <Button x:Name="btnOpen" ToolTip="Otevřít (Ctrl+O)" Command="ApplicationCommands.Open">
                 <Image Source="/Resources/Icons/OpenFolder.png"/>
             </Button>
-            <Button x:Name="btnSave">
-                <Image Source="/Resources/Icons/Save.png" ToolTip="Uložit"/>
+            <Button x:Name="btnSave" ToolTip="Uložit" Command="ApplicationCommands.Save">
+                <Image Source="/Resources/Icons/Save.png" />
             </Button>
             <Separator/>
-            <Button x:Name="btnUndo">
-                <Image Source="/Resources/Icons/Undo.png" ToolTip="Zpět"/>
+            <Button x:Name="btnUndo" ToolTip="Zpět">
+                <Image Source="/Resources/Icons/Undo.png" />
             </Button>
-            <Button x:Name="btnRedo">
-                <Image Source="/Resources/Icons/Redo.png" ToolTip="Vpřed"/>
+            <Button x:Name="btnRedo" ToolTip="Vpřed">
+                <Image Source="/Resources/Icons/Redo.png" />
             </Button>
             <Separator/>
             <Button x:Name="btnCut" ToolTip="Vyjmout">
@@ -228,7 +233,7 @@
                 <TextBlock x:Name="tbCursorPosition" Text="0/0"/>
             </StatusBarItem>
         </StatusBar>
-        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor">
             <RichTextBox.Resources>
                 <Style TargetType="Paragraph">
                     <Setter Property="Margin" Value="0"/>
