@@ -17,6 +17,7 @@
     <None Remove="Resources\Icons\Close.png" />
     <None Remove="Resources\Icons\Copy.png" />
     <None Remove="Resources\Icons\Cut.png" />
+    <None Remove="Resources\Icons\Down.png" />
     <None Remove="Resources\Icons\Find.png" />
     <None Remove="Resources\Icons\Italic.png" />
     <None Remove="Resources\Icons\Last.png" />
@@ -26,6 +27,7 @@
     <None Remove="Resources\Icons\Properties.png" />
     <None Remove="Resources\Icons\Redo.png" />
     <None Remove="Resources\Icons\Replace.png" />
+    <None Remove="Resources\Icons\RTBEditor.ico" />
     <None Remove="Resources\Icons\Save.png" />
     <None Remove="Resources\Icons\SaveAs.png" />
     <None Remove="Resources\Icons\SelectAll.png" />
@@ -58,6 +60,9 @@
     <Resource Include="Resources\Icons\Cut.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Icons\Down.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Icons\Find.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -83,6 +88,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\Replace.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\RTBEditor.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\Save.png">

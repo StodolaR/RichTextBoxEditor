@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RichTextBoxEditor"
         mc:Ignorable="d"
-        Title="Bez názvu" Width="800" Height="600" WindowState="Maximized">
+        Title="Bez názvu" Width="800" Height="450" WindowState="Maximized" 
+        Icon="/Resources/Icons/RTBEditor.ico">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <Menu.Resources>
@@ -149,5 +150,79 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
+        <ToolBar DockPanel.Dock="Top">
+            <ToolBar.Resources>
+                <Style TargetType="Image">
+                    <Setter Property="Width" Value="20"/>
+                </Style>
+            </ToolBar.Resources>
+            <Button x:Name="btnNew" ToolTip="Nový">
+                <Image Source="/Resources/Icons/New.png"/>
+            </Button>
+            <Button x:Name="btnOpen" ToolTip="Otevřít">
+                <Image Source="/Resources/Icons/OpenFolder.png"/>
+            </Button>
+            <Button x:Name="btnSave">
+                <Image Source="/Resources/Icons/Save.png" ToolTip="Uložit"/>
+            </Button>
+            <Separator/>
+            <Button x:Name="btnUndo">
+                <Image Source="/Resources/Icons/Undo.png" ToolTip="Zpět"/>
+            </Button>
+            <Button x:Name="btnRedo">
+                <Image Source="/Resources/Icons/Redo.png" ToolTip="Vpřed"/>
+            </Button>
+            <Separator/>
+            <Button x:Name="btnCut" ToolTip="Vyjmout">
+                <Image Source="/Resources/Icons/Cut.png"/>
+            </Button>
+            <Button x:Name="btnCopy" ToolTip="Kopírovat">
+                <Image Source="/Resources/Icons/Copy.png"/>
+            </Button>
+            <Button x:Name="btnPaste" ToolTip="Vložit">
+                <Image Source="/Resources/Icons/Paste.png"/>
+            </Button>
+            <Separator/>
+            <Button x:Name="btnFind" ToolTip="Najít">
+                <Image Source="/Resources/Icons/Find.png"/>
+            </Button>
+            <Button x:Name="btnReplace" ToolTip="Najít a nahradit">
+                <Image Source="/Resources/Icons/Replace.png"/>
+            </Button>
+            <Separator/>
+            <ComboBox x:Name="cbFFamily" Width="150" ToolTip="Název písma"/>
+            <ComboBox x:Name="cbFSize" Width="50" ToolTip="Velikost písma"/>
+            <Separator/>
+            <Button x:Name="btnBold" ToolTip="Tučné">
+                <Image Source="/Resources/Icons/Bold.png"/>
+            </Button>
+            <Button x:Name="btnItalic" ToolTip="Kurzíva">
+                <Image Source="/Resources/Icons/Italic.png"/>
+            </Button>
+            <Button x:Name="btnUnderline" ToolTip="Podtržené">
+                <Image Source="/Resources/Icons/Underline.png"/>
+            </Button>
+            <Separator/>
+            <Button x:Name="btnColor" ToolTip="Barva písma">
+                <Image Source="/Resources/Icons/TextColor.png" Width="17"/>
+            </Button>
+            <Button x:Name="btnColors" Height="30" ToolTip="Vyber barvu">
+                <Image Source="/Resources/Icons/Down.png" Width="8" VerticalAlignment="Center"/>
+            </Button>
+            <Separator/>
+            <Button x:Name="btnALeft" ToolTip="Zarovnání vlevo">
+                <Image Source="/Resources/Icons/AlignLeft.png"/>
+            </Button>
+            <Button x:Name="btnACenter" ToolTip="Zarovnání uprostřed">
+                <Image Source="/Resources/Icons/AlignCenter.png"/>
+            </Button>
+            <Button x:Name="btnARight" ToolTip="Zarovnání vpravo">
+                <Image Source="/Resources/Icons/AlignRight.png"/>
+            </Button>
+            <Button x:Name="btnAJustify" ToolTip="Zarovnání do bloku">
+                <Image Source="/Resources/Icons/AlignJustify.png"/>
+            </Button>
+        </ToolBar>
+        <RichTextBox/>
     </DockPanel>
 </Window>
