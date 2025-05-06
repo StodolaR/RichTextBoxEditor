@@ -8,13 +8,15 @@
         Title="Bez názvu" Width="800" Height="450" WindowState="Maximized" 
         Icon="/Resources/Icons/RTBEditor.ico" x:Name="mainWindow">
     <Window.CommandBindings>
-        <CommandBinding x:Name="cbNew" Command="ApplicationCommands.New" CanExecute="cbNew_CanExecute" Executed="cbNew_Executed"/>
-        <CommandBinding x:Name="cbOpen" Command="ApplicationCommands.Open" CanExecute="cbOpen_CanExecute" Executed="cbOpen_Executed"/>
-        <CommandBinding x:Name="cbSave" Command="ApplicationCommands.Save" CanExecute="cbSave_CanExecute" Executed="cbSave_Executed"/>
-        <CommandBinding x:Name="cbSaveAs" Command="ApplicationCommands.SaveAs" CanExecute="cbSaveAs_CanExecute" Executed="cbSaveAs_Executed"/>
+        <CommandBinding x:Name="cbNew" Command="ApplicationCommands.New" Executed="cbNew_Executed"/>
+        <CommandBinding x:Name="cbOpen" Command="ApplicationCommands.Open" Executed="cbOpen_Executed"/>
+        <CommandBinding x:Name="cbSave" Command="ApplicationCommands.Save" Executed="cbSave_Executed"/>
+        <CommandBinding x:Name="cbSaveAs" Command="ApplicationCommands.SaveAs" Executed="cbSaveAs_Executed"/>
+        <CommandBinding x:Name="cbClose" Command="ApplicationCommands.Close" Executed="cbClose_Executed"/>
+        <CommandBinding x:Name="cbProperties" Command="ApplicationCommands.Properties" Executed="cbProperties_Executed"/>
     </Window.CommandBindings>
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top" x:Name="mainMenu">
             <Menu.Resources>
                 <Style TargetType="Image">
                     <Setter Property="Width" Value="15"/>
@@ -34,7 +36,7 @@
                         <Image Source="/Resources/Icons/OpenFolder.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Poslední dokumenty">
+                <MenuItem Header="Poslední dokumenty" x:Name="miLastDoc" >
                     <MenuItem.Icon>
                         <Image Source="/Resources/Icons/Last.png"/>
                     </MenuItem.Icon>
@@ -51,13 +53,13 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Vlastnosti">
+                <MenuItem Header="Vlastnosti" Command="ApplicationCommands.Properties">
                     <MenuItem.Icon>
                         <Image Source="/Resources/Icons/Properties.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Ukončit">
+                <MenuItem Header="Ukončit" Command="ApplicationCommands.Close">
                     <MenuItem.Icon>
                         <Image Source="/Resources/Icons/Close.png"/>
                     </MenuItem.Icon>

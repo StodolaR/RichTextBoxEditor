@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,86 +22,106 @@ namespace RichTextBoxEditor
     {
         private string filePath;
         private bool edited;
+        private List<MenuItem> lastDocs;
+        
         public MainWindow()
         {
             InitializeComponent();
             filePath = string.Empty;
             edited = false;
+            lastDocs = new List<MenuItem>();
         }
 
-        private void cbNew_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void AddToLastDocs()
         {
-            e.CanExecute = true;
+            foreach (MenuItem item in lastDocs.ToList<MenuItem>())
+            {
+                if ((string)item.Header == filePath)
+                {
+                    miLastDoc.Items.Remove(item);
+                    lastDocs.Remove(item);
+                    break;
+                }
+            }
+            CommandBinding cbOpenLast = new CommandBinding();
+            cbOpenLast.Command = OtherCommands.OpenLast;
+            cbOpenLast.Executed += cbOpenLast_Executed;
+            Image icon = new Image();
+            icon.Source = new BitmapImage(new Uri(@"/Resources/Icons/Last.png", UriKind.Relative));
+            MenuItem lastDoc = new MenuItem();
+            lastDoc.Header = filePath;
+            lastDoc.CommandBindings.Add(cbOpenLast);
+            lastDoc.Command = OtherCommands.OpenLast;
+            lastDoc.Icon = icon;
+            miLastDoc.Items.Insert(0, lastDoc);
+            lastDocs.Add(lastDoc);
         }
 
         private void cbNew_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            if (CancelAskSaveDocument())
+            {
+                return;
+            }
+            rtbEditor.Document.Blocks.Clear();
+            if(filePath != string.Empty)
+            {
+                AddToLastDocs();
+                filePath = string.Empty;
+            }           
+            mainWindow.Title = "Bez názvu";
+            edited = false;
+        }
+        private bool CancelAskSaveDocument()
+        {
             if (edited)
             {
                 MessageBoxResult result = MessageBox.Show("Přejete si uložit stávající dokument?", "Uložení dokumentu",
                                                             MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Cancel)
-                {
-                    return;
-                }
                 if (result == MessageBoxResult.Yes)
                 {
                     Save();
                 }
+                return result == MessageBoxResult.Cancel;
             }
-            rtbEditor.Document.Blocks.Clear();
-            filePath = string.Empty;
-            mainWindow.Title = "Bez názvu";
-            edited = false;
-        }
-
-        private void cbOpen_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute= true;
+            return false;
         }
 
         private void cbOpen_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (edited)
+            if (CancelAskSaveDocument())
             {
-                MessageBoxResult result = MessageBox.Show("Přejete si uložit stávající dokument?", "Uložení dokumentu",
-                                                            MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Cancel)
-                {
-                    return;
-                }
-                if (result == MessageBoxResult.Yes)
-                {
-                    Save();
-                }
+                return;
             }
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "RichTextFile *.rtf|*.rtf";
             if (ofd.ShowDialog() == true)
             {
-                try
-                {
-                    using (FileStream fs = new FileStream(ofd.FileName, FileMode.Open))
-                    {
-                        TextRange allDocument = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-                        allDocument.Load(fs, DataFormats.Rtf);
-                        filePath = ofd.FileName;
-                        mainWindow.Title = System.IO.Path.GetFileName(ofd.FileName);
-                        edited = false;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Dokument nelze načíst" + Environment.NewLine + ex);
-                }
+                OpenFile(ofd.FileName);
             }
         }
-
-        private void cbSave_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenFile(string openFilePath)
         {
-            e.CanExecute = true;
+            try
+            {
+                using (FileStream fs = new FileStream(openFilePath, FileMode.Open))
+                {
+                    TextRange allDocument = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+                    allDocument.Load(fs, DataFormats.Rtf);
+                    if (filePath != string.Empty && filePath != openFilePath)
+                    {
+                        AddToLastDocs();
+                    }
+                    filePath = openFilePath;
+                    mainWindow.Title = System.IO.Path.GetFileName(openFilePath);
+                    edited = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Dokument nelze načíst" + Environment.NewLine + ex);
+            }
         }
-
         private void cbSave_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Save();
@@ -117,11 +138,7 @@ namespace RichTextBoxEditor
                 SaveAs();
             }
         }
-        private void cbSaveAs_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
+        
         private void cbSaveAs_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             SaveAs();
@@ -160,6 +177,48 @@ namespace RichTextBoxEditor
         private void rtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
         {
             edited = true;
+        }
+
+        private void cbClose_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (CancelAskSaveDocument())
+            {
+                return;
+            }
+            mainWindow.Close();
+        }
+        private void cbOpenLast_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (CancelAskSaveDocument())
+            {
+                return;
+            }
+            string openFilePath = (string)((MenuItem)sender).Header;
+            OpenFile(openFilePath);
+        }
+
+        private void cbProperties_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            string filename = string.Empty;
+            string path = string.Empty;
+            string size = string.Empty;
+            string createDate = string.Empty;
+            if (filePath != string.Empty)
+            {
+                try
+                {
+                    FileInfo fileInfo = new FileInfo(filePath);
+                    filename = fileInfo.Name;
+                    path = fileInfo.DirectoryName;
+                    size = fileInfo.Length.ToString();
+                    createDate = fileInfo.CreationTime.ToString();
+                }
+                catch { }
+            }
+            MessageBox.Show($"Název souboru: {filename}" + Environment.NewLine
+                          + $"Umístění          : {path}" + Environment.NewLine
+                          + $"Velikost            : {size}bytů" + Environment.NewLine
+                          + $"Vytvořen          : {createDate}" + Environment.NewLine);
         }
     }
 }
