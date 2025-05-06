@@ -11,6 +11,7 @@
         <CommandBinding x:Name="cbNew" Command="ApplicationCommands.New" CanExecute="cbNew_CanExecute" Executed="cbNew_Executed"/>
         <CommandBinding x:Name="cbOpen" Command="ApplicationCommands.Open" CanExecute="cbOpen_CanExecute" Executed="cbOpen_Executed"/>
         <CommandBinding x:Name="cbSave" Command="ApplicationCommands.Save" CanExecute="cbSave_CanExecute" Executed="cbSave_Executed"/>
+        <CommandBinding x:Name="cbSaveAs" Command="ApplicationCommands.SaveAs" CanExecute="cbSaveAs_CanExecute" Executed="cbSaveAs_Executed"/>
     </Window.CommandBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -44,7 +45,7 @@
                         <Image Source="/Resources/Icons/Save.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Uložit jako">
+                <MenuItem Header="Uložit jako" Command="ApplicationCommands.SaveAs">
                     <MenuItem.Icon>
                         <Image Source="/Resources/Icons/SaveAs.png"/>
                     </MenuItem.Icon>
@@ -233,7 +234,7 @@
                 <TextBlock x:Name="tbCursorPosition" Text="0/0"/>
             </StatusBarItem>
         </StatusBar>
-        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor">
+        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="rtbEditor_SelectionChanged">
             <RichTextBox.Resources>
                 <Style TargetType="Paragraph">
                     <Setter Property="Margin" Value="0"/>

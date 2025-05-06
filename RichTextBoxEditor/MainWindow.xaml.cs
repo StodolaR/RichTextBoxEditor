@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,9 +19,13 @@ namespace RichTextBoxEditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string filePath;
+        private bool edited;
         public MainWindow()
         {
             InitializeComponent();
+            filePath = string.Empty;
+            edited = false;
         }
 
         private void cbNew_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -30,8 +35,23 @@ namespace RichTextBoxEditor
 
         private void cbNew_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("Přejete si uložit stávající dokument?");
+            if (edited)
+            {
+                MessageBoxResult result = MessageBox.Show("Přejete si uložit stávající dokument?", "Uložení dokumentu",
+                                                            MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+                if (result == MessageBoxResult.Yes)
+                {
+                    Save();
+                }
+            }
             rtbEditor.Document.Blocks.Clear();
+            filePath = string.Empty;
+            mainWindow.Title = "Bez názvu";
+            edited = false;
         }
 
         private void cbOpen_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -41,7 +61,19 @@ namespace RichTextBoxEditor
 
         private void cbOpen_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("Přejete si uložit stávající dokument?");
+            if (edited)
+            {
+                MessageBoxResult result = MessageBox.Show("Přejete si uložit stávající dokument?", "Uložení dokumentu",
+                                                            MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+                if (result == MessageBoxResult.Yes)
+                {
+                    Save();
+                }
+            }
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "RichTextFile *.rtf|*.rtf";
             if (ofd.ShowDialog() == true)
@@ -52,7 +84,9 @@ namespace RichTextBoxEditor
                     {
                         TextRange allDocument = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
                         allDocument.Load(fs, DataFormats.Rtf);
+                        filePath = ofd.FileName;
                         mainWindow.Title = System.IO.Path.GetFileName(ofd.FileName);
+                        edited = false;
                     }
                 }
                 catch (Exception ex)
@@ -69,24 +103,63 @@ namespace RichTextBoxEditor
 
         private void cbSave_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            Save();
+        }
+        private void Save()
+        {
+            if (filePath != string.Empty)
+            {
+                SaveFile(filePath, false);
+                MessageBox.Show("Soubor byl uložen");
+            }
+            else
+            {
+                SaveAs();
+            }
+        }
+        private void cbSaveAs_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void cbSaveAs_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SaveAs();
+        }
+        private void SaveAs()
+        {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "RichTextFile *.rtf|*.rtf";
-            if(sfd.ShowDialog() == true)
+            if (sfd.ShowDialog() == true)
             {
-                try
+                SaveFile(sfd.FileName, true);
+                filePath = sfd.FileName;
+            }
+        }
+        private void SaveFile(string path, bool newFile)
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(path, FileMode.Create))
                 {
-                    using (FileStream fs = new FileStream(sfd.FileName, FileMode.Create))
+                    TextRange allDocument = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+                    allDocument.Save(fs, DataFormats.Rtf);
+                    if (newFile)
                     {
-                        TextRange allDocument = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-                        allDocument.Save(fs, DataFormats.Rtf);
-                        mainWindow.Title = System.IO.Path.GetFileName(sfd.FileName);
+                        mainWindow.Title = System.IO.Path.GetFileName(path);
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Dokument nelze uložit" + Environment.NewLine + ex);
+                    edited = false;
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Dokument nelze uložit" + Environment.NewLine + ex);
+            }
+        }
+
+        private void rtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            edited = true;
         }
     }
 }
