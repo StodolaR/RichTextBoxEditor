@@ -227,6 +227,36 @@ namespace RichTextBoxEditor
 
         //MenuItem Upravy
         //MenuItem Zpet
+        private void cbUndo_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (rtbEditor != null)
+            {
+                e.CanExecute = rtbEditor.CanUndo;
+            }
+        }
 
+        private void cbUndo_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            rtbEditor.Undo();
+        }
+
+        private void rtbEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+            rtbEditor.Undo();
+            rtbEditor.Redo();
+        }
+        //MenuItem Vpred
+        private void cbRedo_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (rtbEditor != null)
+            {
+                e.CanExecute = rtbEditor.CanRedo;
+            }
+        }
+
+        private void cbRedo_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            rtbEditor.Redo();
+        }       
     }
 }
