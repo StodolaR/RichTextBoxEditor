@@ -29,7 +29,8 @@ namespace RichTextBoxEditor
             filePath = string.Empty;
             edited = false;
         }
-
+        // MemuItem Soubor
+        // MenuItem Novy
         private void cbNew_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (CancelAskSaveDocument())
@@ -60,6 +61,11 @@ namespace RichTextBoxEditor
             return false;
         }
 
+        private void rtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            edited = true;
+        }
+
         private void AddToLastDocs()
         {
             for (int i = 0 ; i < miLastDoc.Items.Count; i++)
@@ -84,7 +90,7 @@ namespace RichTextBoxEditor
             lastDoc.Icon = icon;
             miLastDoc.Items.Insert(0, lastDoc);
         }
-
+        //Menuitem Otevrit
         private void cbOpen_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (CancelAskSaveDocument())
@@ -120,6 +126,7 @@ namespace RichTextBoxEditor
                 MessageBox.Show("Dokument nelze načíst" + Environment.NewLine + ex);
             }
         }
+        //MenuItem Posledni dokumenty
         private void cbOpenLast_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (CancelAskSaveDocument())
@@ -129,6 +136,7 @@ namespace RichTextBoxEditor
             string openFilePath = (string)((MenuItem)sender).Header;
             OpenFile(openFilePath);
         }
+        //MenuItem Ulozit
         private void cbSave_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Save();
@@ -145,7 +153,7 @@ namespace RichTextBoxEditor
                 SaveAs();
             }
         }
-        
+        //MenuItem Ulozit jako
         private void cbSaveAs_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             SaveAs();
@@ -180,12 +188,7 @@ namespace RichTextBoxEditor
                 MessageBox.Show("Dokument nelze uložit" + Environment.NewLine + ex);
             }
         }
-
-        private void rtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-            edited = true;
-        }
-
+        //MenuItem Vlastnosti
         private void cbProperties_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             string filename = string.Empty;
@@ -212,7 +215,7 @@ namespace RichTextBoxEditor
                           + $"Velikost            : {size}bytů" + Environment.NewLine
                           + $"Vytvořen          : {createDate}" + Environment.NewLine);
         }
-
+        //MenuItem Konec
         private void cbClose_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (CancelAskSaveDocument())
@@ -221,5 +224,9 @@ namespace RichTextBoxEditor
             }
             mainWindow.Close();
         }
+
+        //MenuItem Upravy
+        //MenuItem Zpet
+
     }
 }
