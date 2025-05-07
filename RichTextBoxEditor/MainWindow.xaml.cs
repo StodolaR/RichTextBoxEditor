@@ -22,39 +22,12 @@ namespace RichTextBoxEditor
     {
         private string filePath;
         private bool edited;
-        private List<MenuItem> lastDocs;
         
         public MainWindow()
         {
             InitializeComponent();
             filePath = string.Empty;
             edited = false;
-            lastDocs = new List<MenuItem>();
-        }
-
-        private void AddToLastDocs()
-        {
-            foreach (MenuItem item in lastDocs.ToList<MenuItem>())
-            {
-                if ((string)item.Header == filePath)
-                {
-                    miLastDoc.Items.Remove(item);
-                    lastDocs.Remove(item);
-                    break;
-                }
-            }
-            CommandBinding cbOpenLast = new CommandBinding();
-            cbOpenLast.Command = OtherCommands.OpenLast;
-            cbOpenLast.Executed += cbOpenLast_Executed;
-            Image icon = new Image();
-            icon.Source = new BitmapImage(new Uri(@"/Resources/Icons/Last.png", UriKind.Relative));
-            MenuItem lastDoc = new MenuItem();
-            lastDoc.Header = filePath;
-            lastDoc.CommandBindings.Add(cbOpenLast);
-            lastDoc.Command = OtherCommands.OpenLast;
-            lastDoc.Icon = icon;
-            miLastDoc.Items.Insert(0, lastDoc);
-            lastDocs.Add(lastDoc);
         }
 
         private void cbNew_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -85,6 +58,31 @@ namespace RichTextBoxEditor
                 return result == MessageBoxResult.Cancel;
             }
             return false;
+        }
+
+        private void AddToLastDocs()
+        {
+            for (int i = 0 ; i < miLastDoc.Items.Count; i++)
+            {
+                if ((string)((MenuItem)miLastDoc.Items[i]).Header == filePath)
+                {
+                    MenuItem movedLastDoc = (MenuItem)miLastDoc.Items [i];
+                    miLastDoc.Items.RemoveAt(i);
+                    miLastDoc.Items.Insert(0, movedLastDoc);
+                    return;
+                }
+            }
+            CommandBinding cbOpenLast = new CommandBinding();
+            cbOpenLast.Command = OtherCommands.OpenLast;
+            cbOpenLast.Executed += cbOpenLast_Executed;
+            Image icon = new Image();
+            icon.Source = new BitmapImage(new Uri(@"/Resources/Icons/Last.png", UriKind.Relative));
+            MenuItem lastDoc = new MenuItem();
+            lastDoc.Header = filePath;
+            lastDoc.CommandBindings.Add(cbOpenLast);
+            lastDoc.Command = OtherCommands.OpenLast;
+            lastDoc.Icon = icon;
+            miLastDoc.Items.Insert(0, lastDoc);
         }
 
         private void cbOpen_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -121,6 +119,15 @@ namespace RichTextBoxEditor
             {
                 MessageBox.Show("Dokument nelze načíst" + Environment.NewLine + ex);
             }
+        }
+        private void cbOpenLast_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (CancelAskSaveDocument())
+            {
+                return;
+            }
+            string openFilePath = (string)((MenuItem)sender).Header;
+            OpenFile(openFilePath);
         }
         private void cbSave_Executed(object sender, ExecutedRoutedEventArgs e)
         {
@@ -179,24 +186,6 @@ namespace RichTextBoxEditor
             edited = true;
         }
 
-        private void cbClose_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (CancelAskSaveDocument())
-            {
-                return;
-            }
-            mainWindow.Close();
-        }
-        private void cbOpenLast_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (CancelAskSaveDocument())
-            {
-                return;
-            }
-            string openFilePath = (string)((MenuItem)sender).Header;
-            OpenFile(openFilePath);
-        }
-
         private void cbProperties_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             string filename = string.Empty;
@@ -209,7 +198,10 @@ namespace RichTextBoxEditor
                 {
                     FileInfo fileInfo = new FileInfo(filePath);
                     filename = fileInfo.Name;
-                    path = fileInfo.DirectoryName;
+                    if (fileInfo.DirectoryName != null)
+                    {
+                        path = fileInfo.DirectoryName;
+                    }
                     size = fileInfo.Length.ToString();
                     createDate = fileInfo.CreationTime.ToString();
                 }
@@ -219,6 +211,15 @@ namespace RichTextBoxEditor
                           + $"Umístění          : {path}" + Environment.NewLine
                           + $"Velikost            : {size}bytů" + Environment.NewLine
                           + $"Vytvořen          : {createDate}" + Environment.NewLine);
+        }
+
+        private void cbClose_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (CancelAskSaveDocument())
+            {
+                return;
+            }
+            mainWindow.Close();
         }
     }
 }
