@@ -21,6 +21,7 @@
     <None Remove="Resources\Icons\Find.png" />
     <None Remove="Resources\Icons\Italic.png" />
     <None Remove="Resources\Icons\Last.png" />
+    <None Remove="Resources\Icons\LetterA.png" />
     <None Remove="Resources\Icons\New.png" />
     <None Remove="Resources\Icons\OpenFolder.png" />
     <None Remove="Resources\Icons\Paste.png" />
@@ -72,6 +73,9 @@
     <Resource Include="Resources\Icons\Last.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Icons\LetterA.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Icons\New.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -100,9 +104,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\SelectAll.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\TextColor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\Underline.png">

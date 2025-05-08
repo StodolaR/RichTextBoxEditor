@@ -1,0 +1,43 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Image Source="/Resources/Icons/New.png" x:Key="iNew"/>
+    <Image Source="/Resources/Icons/New.png" x:Key="iNew2"/>
+    <Image Source="/Resources/Icons/OpenFolder.png" x:Key="iOpen"/>
+    <Image Source="/Resources/Icons/OpenFolder.png" x:Key="iOpen2"/>
+    <Image Source="/Resources/Icons/Last.png" x:Key="iLast"/>
+    <Image Source="/Resources/Icons/Save.png" x:Key="iSave"/>
+    <Image Source="/Resources/Icons/Save.png" x:Key="iSave2"/>
+    <Image Source="/Resources/Icons/SaveAs.png" x:Key="iSaveAs"/>
+    <Image Source="/Resources/Icons/Properties.png" x:Key="iProperties"/>
+    <Image Source="/Resources/Icons/Close.png" x:Key="iClose"/>
+    <Image Source="/Resources/Icons/Undo.png" x:Key="iUndo"/>
+    <Image Source="/Resources/Icons/Undo.png" x:Key="iUndo2"/>
+    <Image Source="/Resources/Icons/Redo.png" x:Key="iRedo"/>
+    <Image Source="/Resources/Icons/Redo.png" x:Key="iRedo2"/>
+    <Image Source="/Resources/Icons/Cut.png" x:Key="iCut"/>
+    <Image Source="/Resources/Icons/Cut.png" x:Key="iCut2"/>
+    <Image Source="/Resources/Icons/Copy.png" x:Key="iCopy"/>
+    <Image Source="/Resources/Icons/Copy.png" x:Key="iCopy2"/>
+    <Image Source="/Resources/Icons/Paste.png" x:Key="iPaste"/>
+    <Image Source="/Resources/Icons/Paste.png" x:Key="iPaste2"/>
+    <Image Source="/Resources/Icons/SelectAll.png" x:Key="iSelectAll"/>
+    <Image Source="/Resources/Icons/Find.png" x:Key="iFind"/>
+    <Image Source="/Resources/Icons/Find.png" x:Key="iFind2"/>
+    <Image Source="/Resources/Icons/Replace.png" x:Key="iReplace"/>
+    <Image Source="/Resources/Icons/Replace.png" x:Key="iReplace2"/>
+    <Image Source="/Resources/Icons/Bold.png" x:Key="iBold"/>
+    <Image Source="/Resources/Icons/Bold.png" x:Key="iBold2"/>
+    <Image Source="/Resources/Icons/Italic.png" x:Key="iItalic"/>
+    <Image Source="/Resources/Icons/Italic.png" x:Key="iItalic2"/>
+    <Image Source="/Resources/Icons/Underline.png" x:Key="iUnderline"/>
+    <Image Source="/Resources/Icons/Underline.png" x:Key="iUnderline2"/>
+    <Image Source="/Resources/Icons/Down.png" Width="8" x:Key="iDown"/>
+    <Image Source="/Resources/Icons/AlignLeft.png" x:Key="iAlegnLeft"/>
+    <Image Source="/Resources/Icons/AlignLeft.png" x:Key="iAlegnLeft2"/>
+    <Image Source="/Resources/Icons/AlignCenter.png" x:Key="iAlegnCenter"/>
+    <Image Source="/Resources/Icons/AlignCenter.png" x:Key="iAlegnCenter2"/>
+    <Image Source="/Resources/Icons/AlignRight.png" x:Key="iAlegnRight"/>
+    <Image Source="/Resources/Icons/AlignRight.png" x:Key="iAlegnRight2"/>
+    <Image Source="/Resources/Icons/AlignJustify.png" x:Key="iAlegnJustify"/>
+    <Image Source="/Resources/Icons/AlignJustify.png" x:Key="iAlegnJustify2"/>
+</ResourceDictionary>

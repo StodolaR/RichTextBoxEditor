@@ -28,135 +28,42 @@
                 </Style>
             </Menu.Resources>
             <MenuItem Header="Soubor">
-                <MenuItem Header="Nový" Command="ApplicationCommands.New">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/New.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Otevřít" Command="ApplicationCommands.Open">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/OpenFolder.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Poslední dokumenty" x:Name="miLastDoc" >
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/Last.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
+                <MenuItem Header="Nový" Command="ApplicationCommands.New" Icon="{StaticResource iNew}"/>
+                <MenuItem Header="Otevřít" Command="ApplicationCommands.Open" Icon="{StaticResource iOpen}"/>
+                <MenuItem Header="Poslední dokumenty" x:Name="miLastDoc" Icon="{StaticResource iLast}"/>
                 <Separator/>
-                <MenuItem Header="Uložit" Command="ApplicationCommands.Save">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/Save.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Uložit jako" Command="ApplicationCommands.SaveAs">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/SaveAs.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
+                <MenuItem Header="Uložit" Command="ApplicationCommands.Save" Icon="{StaticResource iSave}"/>
+                <MenuItem Header="Uložit jako" Command="ApplicationCommands.SaveAs" Icon="{StaticResource iSaveAs}"/>
                 <Separator/>
-                <MenuItem Header="Vlastnosti" Command="ApplicationCommands.Properties">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/Properties.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
+                <MenuItem Header="Vlastnosti" Command="ApplicationCommands.Properties" Icon="{StaticResource iProperties}"/>
                 <Separator/>
-                <MenuItem Header="Ukončit" Command="ApplicationCommands.Close">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/Close.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
+                <MenuItem Header="Ukončit" Command="ApplicationCommands.Close" Icon="{StaticResource iClose}"/>
             </MenuItem>
             <MenuItem Header="Úpravy">
-                <MenuItem Header="Zpět" Command="ApplicationCommands.Undo">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/Undo.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Vpřed" Command="ApplicationCommands.Redo">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/Redo.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
+                <MenuItem Header="Zpět" Command="ApplicationCommands.Undo" Icon="{StaticResource iUndo}"/>
+                <MenuItem Header="Vpřed" Command="ApplicationCommands.Redo" Icon="{StaticResource iRedo}"/> 
                 <Separator/>
-                <MenuItem Header="Vyjmout" Command="ApplicationCommands.Cut">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/Cut.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Kopírovat" Command="ApplicationCommands.Copy">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/Copy.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Vložit" Command="ApplicationCommands.Paste">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/Paste.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
+                <MenuItem Header="Vyjmout" Command="ApplicationCommands.Cut" Icon="{StaticResource iCut}"/>
+                <MenuItem Header="Kopírovat" Command="ApplicationCommands.Copy" Icon="{StaticResource iCopy}"/>
+                <MenuItem Header="Vložit" Command="ApplicationCommands.Paste" Icon="{StaticResource iPaste}"/>
                 <Separator/>
-                <MenuItem Header="Vybrat vše" Command="ApplicationCommands.SelectAll">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/SelectAll.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator/>
-                <MenuItem Header="Najít">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/Find.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Nahradit">
-                    <MenuItem.Icon>
-                        <Image Source="/Resources/Icons/Replace.png"/>
-                    </MenuItem.Icon>
-                </MenuItem>
+                <MenuItem Header="Vybrat vše" Command="ApplicationCommands.SelectAll" Icon="{StaticResource iSelectAll}"/>
+                    <Separator/>
+                <MenuItem Header="Najít" Icon="{StaticResource iFind}"/>
+                <MenuItem Header="Nahradit" Icon="{StaticResource iReplace}"/>
             </MenuItem>
             <MenuItem Header="Formát">
                 <MenuItem Header="Písmo">
-                    <MenuItem Header="Tučné">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/Icons/Bold.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Kurzíva">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/Icons/Italic.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Podtržené">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/Icons/Underline.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
+                    <MenuItem Header="Tučné" Icon="{StaticResource iBold}"/>
+                    <MenuItem Header="Kurzíva" Icon="{StaticResource iItalic}"/>
+                    <MenuItem Header="Podtržené" Icon="{StaticResource iUnderline}"/>
                     <Separator/>
-                    <MenuItem Header="Barva">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/Icons/TextColor.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Zarovnání">
-                    <MenuItem Header="Vlevo">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/Icons/AlignLeft.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Na střed">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/Icons/AlignCenter.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Vpravo">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/Icons/AlignRight.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Do bloku">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/Icons/AlignJustify.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
+                    <MenuItem Header="Vlevo" Icon="{StaticResource iAlegnLeft}"/>
+                    <MenuItem Header="Na střed" Icon="{StaticResource iAlegnCenter}"/>
+                    <MenuItem Header="Vpravo" Icon="{StaticResource iAlegnRight}"/>
+                    <MenuItem Header="Do bloku" Icon="{StaticResource iAlegnJustify}"/>
                 </MenuItem>
             </MenuItem>
         </Menu>
@@ -166,72 +73,39 @@
                     <Setter Property="Width" Value="20"/>
                 </Style>
             </ToolBar.Resources>
-            <Button x:Name="btnNew" ToolTip="Nový (Ctrl+N)" Command="ApplicationCommands.New">
-                <Image Source="/Resources/Icons/New.png"/>
-            </Button>
-            <Button x:Name="btnOpen" ToolTip="Otevřít (Ctrl+O)" Command="ApplicationCommands.Open">
-                <Image Source="/Resources/Icons/OpenFolder.png"/>
-            </Button>
-            <Button x:Name="btnSave" ToolTip="Uložit (Ctrl+S)" Command="ApplicationCommands.Save">
-                <Image Source="/Resources/Icons/Save.png" />
-            </Button>
+            <Button x:Name="btnNew" ToolTip="Nový (Ctrl+N)" Command="ApplicationCommands.New" Content="{StaticResource iNew2}"/>
+            <Button x:Name="btnOpen" ToolTip="Otevřít (Ctrl+O)" Command="ApplicationCommands.Open" Content="{StaticResource iOpen2}"/>
+            <Button x:Name="btnSave" ToolTip="Uložit (Ctrl+S)" Command="ApplicationCommands.Save" Content="{StaticResource iSave2}"/>
             <Separator/>
-            <Button x:Name="btnUndo" ToolTip="Zpět (Ctrl+Z)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Undo">
-                <Image Source="/Resources/Icons/Undo.png" />
-            </Button>
-            <Button x:Name="btnRedo" ToolTip="Vpřed (Ctrl+Y)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Redo">
-                <Image Source="/Resources/Icons/Redo.png" />
-            </Button>
+            <Button x:Name="btnUndo" ToolTip="Zpět (Ctrl+Z)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Undo" Content="{StaticResource iUndo2}"/>
+            <Button x:Name="btnRedo" ToolTip="Vpřed (Ctrl+Y)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Redo" Content="{StaticResource iRedo2}"/>
             <Separator/>
-            <Button x:Name="btnCut" ToolTip="Vyjmout (Ctrl+X)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Cut">
-                <Image Source="/Resources/Icons/Cut.png"/>
-            </Button>
-            <Button x:Name="btnCopy" ToolTip="Kopírovat (Ctrl+C)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Copy">
-                <Image Source="/Resources/Icons/Copy.png"/>
-            </Button>
-            <Button x:Name="btnPaste" ToolTip="Vložit (Ctrl+V)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Paste">
-                <Image Source="/Resources/Icons/Paste.png"/>
-            </Button>
+            <Button x:Name="btnCut" ToolTip="Vyjmout (Ctrl+X)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Cut" Content="{StaticResource iCut2}"/>
+            <Button x:Name="btnCopy" ToolTip="Kopírovat (Ctrl+C)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Copy" Content="{StaticResource iCopy2}"/>
+            <Button x:Name="btnPaste" ToolTip="Vložit (Ctrl+V)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Paste" Content="{StaticResource iPaste2}"/>
             <Separator/>
-            <Button x:Name="btnFind" ToolTip="Najít">
-                <Image Source="/Resources/Icons/Find.png"/>
-            </Button>
-            <Button x:Name="btnReplace" ToolTip="Najít a nahradit">
-                <Image Source="/Resources/Icons/Replace.png"/>
-            </Button>
+            <Button x:Name="btnFind" ToolTip="Najít" Content="{StaticResource iFind2}"/>
+            <Button x:Name="btnReplace" ToolTip="Najít a nahradit" Content="{StaticResource iReplace2}"/>
             <Separator/>
             <ComboBox x:Name="cbFFamily" Width="150" ToolTip="Název písma"/>
             <ComboBox x:Name="cbFSize" Width="50" ToolTip="Velikost písma"/>
             <Separator/>
-            <Button x:Name="btnBold" ToolTip="Tučné">
-                <Image Source="/Resources/Icons/Bold.png"/>
-            </Button>
-            <Button x:Name="btnItalic" ToolTip="Kurzíva">
-                <Image Source="/Resources/Icons/Italic.png"/>
-            </Button>
-            <Button x:Name="btnUnderline" ToolTip="Podtržené">
-                <Image Source="/Resources/Icons/Underline.png"/>
-            </Button>
+            <Button x:Name="btnBold" ToolTip="Tučné" Content="{StaticResource iBold2}"/>
+            <Button x:Name="btnItalic" ToolTip="Kurzíva" Content="{StaticResource iItalic2}"/>
+            <Button x:Name="btnUnderline" ToolTip="Podtržené" Content="{StaticResource iUnderline2}"/>
             <Separator/>
             <Button x:Name="btnColor" ToolTip="Barva písma">
-                <Image Source="/Resources/Icons/TextColor.png" Width="17"/>
+                <StackPanel>
+                    <Image Source="/Resources/Icons/LetterA.png" Width="13" Margin="0,0,0,1"/>
+                    <Path Data="M 0 0 H 20 V 7 H 0 Z" Fill="Black" x:Name="pColor"/>
+                </StackPanel>
             </Button>
-            <Button x:Name="btnColors" Height="30" ToolTip="Vyber barvu">
-                <Image Source="/Resources/Icons/Down.png" Width="8" VerticalAlignment="Center"/>
-            </Button>
+            <Button x:Name="btnColors" Height="30" ToolTip="Vyber barvu" Content="{StaticResource iDown}"/>
             <Separator/>
-            <Button x:Name="btnALeft" ToolTip="Zarovnání vlevo">
-                <Image Source="/Resources/Icons/AlignLeft.png"/>
-            </Button>
-            <Button x:Name="btnACenter" ToolTip="Zarovnání uprostřed">
-                <Image Source="/Resources/Icons/AlignCenter.png"/>
-            </Button>
-            <Button x:Name="btnARight" ToolTip="Zarovnání vpravo">
-                <Image Source="/Resources/Icons/AlignRight.png"/>
-            </Button>
-            <Button x:Name="btnAJustify" ToolTip="Zarovnání do bloku">
-                <Image Source="/Resources/Icons/AlignJustify.png"/>
-            </Button>
+            <Button x:Name="btnALeft" ToolTip="Zarovnání vlevo" Content="{StaticResource iAlegnLeft2}"/>
+            <Button x:Name="btnACenter" ToolTip="Zarovnání uprostřed" Content="{StaticResource iAlegnCenter2}"/>
+            <Button x:Name="btnARight" ToolTip="Zarovnání vpravo" Content="{StaticResource iAlegnRight2}"/>
+            <Button x:Name="btnAJustify" ToolTip="Zarovnání do bloku" Content="{StaticResource iAlegnJustify2}"/>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
