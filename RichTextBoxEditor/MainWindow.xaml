@@ -8,16 +8,16 @@
         Title="Bez názvu" Width="800" Height="450" WindowState="Maximized" 
         Icon="/Resources/Icons/RTBEditor.ico" x:Name="mainWindow">
     <Window.CommandBindings>
-        <CommandBinding x:Name="cbNew" Command="ApplicationCommands.New" Executed="cbNew_Executed"/>
-        <CommandBinding x:Name="cbOpen" Command="ApplicationCommands.Open" Executed="cbOpen_Executed"/>
-        <CommandBinding x:Name="cbSave" Command="ApplicationCommands.Save" Executed="cbSave_Executed"/>
-        <CommandBinding x:Name="cbSaveAs" Command="ApplicationCommands.SaveAs" Executed="cbSaveAs_Executed"/>
-        <CommandBinding x:Name="cbClose" Command="ApplicationCommands.Close" Executed="cbClose_Executed"/>
-        <CommandBinding x:Name="cbProperties" Command="ApplicationCommands.Properties" Executed="cbProperties_Executed"/>
-        <CommandBinding x:Name="cbUndo" Command="ApplicationCommands.Undo" Executed="cbUndo_Executed" CanExecute="cbUndo_CanExecute"/>
-        <CommandBinding x:Name="cbRedo" Command="ApplicationCommands.Redo" Executed="cbRedo_Executed" CanExecute="cbRedo_CanExecute"/>
-        <CommandBinding x:Name="cbFind" Command="ApplicationCommands.Find" Executed="cbFind_Executed"/>
-        <CommandBinding x:Name="cbReplace" Command="ApplicationCommands.Replace" Executed="cbReplace_Executed"/>
+        <CommandBinding x:Name="cbNew" Command="ApplicationCommands.New" Executed="CbNew_Executed"/>
+        <CommandBinding x:Name="cbOpen" Command="ApplicationCommands.Open" Executed="CbOpen_Executed"/>
+        <CommandBinding x:Name="cbSave" Command="ApplicationCommands.Save" Executed="CbSave_Executed"/>
+        <CommandBinding x:Name="cbSaveAs" Command="ApplicationCommands.SaveAs" Executed="CbSaveAs_Executed"/>
+        <CommandBinding x:Name="cbClose" Command="ApplicationCommands.Close" Executed="CbClose_Executed"/>
+        <CommandBinding x:Name="cbProperties" Command="ApplicationCommands.Properties" Executed="CbProperties_Executed"/>
+        <CommandBinding x:Name="cbUndo" Command="ApplicationCommands.Undo" Executed="CbUndo_Executed" CanExecute="CbUndo_CanExecute"/>
+        <CommandBinding x:Name="cbRedo" Command="ApplicationCommands.Redo" Executed="CbRedo_Executed" CanExecute="CbRedo_CanExecute"/>
+        <CommandBinding x:Name="cbFind" Command="ApplicationCommands.Find" Executed="CbFind_Executed"/>
+        <CommandBinding x:Name="cbReplace" Command="ApplicationCommands.Replace" Executed="CbReplace_Executed"/>
     </Window.CommandBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top" x:Name="mainMenu">
@@ -116,17 +116,17 @@
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal" Visibility="Collapsed" Name="spFindAndReplace">
                     <TextBlock Text="Hledaný výraz: "/>
-                    <TextBox x:Name="tbxFind" Width="150"/>
-                    <TextBlock x:Name="tbReplace" Text="zaměň za" Visibility="Collapsed"/>
-                    <TextBox x:Name="tbxReplace" Width="150" Visibility="Collapsed"/>
-                    <Button x:Name="btnStartFind" Content="Najdi" Click="btnStartFind_Click" Visibility="Collapsed"/>
-                    <Button x:Name="btnStartReplace" Content="Zaměň" Click="btnStartReplace_Click" Visibility="Collapsed"/>
+                    <TextBox x:Name="tbxFind" Width="150" LostMouseCapture="TextBox_LostMouseCapture" LostKeyboardFocus="TextBox_LostKeyboardFocus"/>
+                    <TextBlock x:Name="tbReplace" Text=" zaměň za " Visibility="Collapsed"/>
+                    <TextBox x:Name="tbxReplace" Width="150" Visibility="Collapsed" LostMouseCapture="TextBox_LostMouseCapture" LostKeyboardFocus="TextBox_LostKeyboardFocus"/>
+                    <Button x:Name="btnStartFind" Content="Najdi" Click="BtnStartFind_Click" Visibility="Collapsed" Width="60"/>
+                    <Button x:Name="btnStartReplace" Content="Zaměň" Click="BtnStartReplace_Click" Visibility="Collapsed" Width="60"/>
                     <TextBlock x:Name="tbStatus"/>
-                    <Button x:Name="btnCloseFind" Content="{StaticResource iClose2}" Click="btnCloseFind_Click" Width="17"/>
+                    <Button x:Name="btnCloseFind" Content="{StaticResource iClose2}" Click="BtnCloseFind_Click" Width="17"/>
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>
-        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="rtbEditor_SelectionChanged" KeyUp="rtbEditor_KeyUp">
+        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="RtbEditor_SelectionChanged" KeyUp="RtbEditor_KeyUp" GotFocus="RtbEditor_GotFocus">
             <RichTextBox.Resources>
                 <Style TargetType="Paragraph">
                     <Setter Property="Margin" Value="0"/>

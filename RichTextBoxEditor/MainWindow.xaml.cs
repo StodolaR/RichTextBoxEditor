@@ -33,7 +33,7 @@ namespace RichTextBoxEditor
         }
         // MemuItem Soubor
         // MenuItem Novy
-        private void cbNew_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CbNew_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (CancelAskSaveDocument())
             {
@@ -63,7 +63,7 @@ namespace RichTextBoxEditor
             return false;
         }
 
-        private void rtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
+        private void RtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
         {
             edited = true;
         }
@@ -82,7 +82,7 @@ namespace RichTextBoxEditor
             }
             CommandBinding cbOpenLast = new CommandBinding();
             cbOpenLast.Command = OtherCommands.OpenLast;
-            cbOpenLast.Executed += cbOpenLast_Executed;
+            cbOpenLast.Executed += CbOpenLast_Executed;
             Image icon = new Image();
             icon.Source = new BitmapImage(new Uri(@"/Resources/Icons/Last.png", UriKind.Relative));
             MenuItem lastDoc = new MenuItem();
@@ -93,7 +93,7 @@ namespace RichTextBoxEditor
             miLastDoc.Items.Insert(0, lastDoc);
         }
         //Menuitem Otevrit
-        private void cbOpen_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CbOpen_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (CancelAskSaveDocument())
             {
@@ -129,7 +129,7 @@ namespace RichTextBoxEditor
             }
         }
         //MenuItem Posledni dokumenty
-        private void cbOpenLast_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CbOpenLast_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (CancelAskSaveDocument())
             {
@@ -139,7 +139,7 @@ namespace RichTextBoxEditor
             OpenFile(openFilePath);
         }
         //MenuItem Ulozit
-        private void cbSave_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CbSave_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Save();
         }
@@ -156,7 +156,7 @@ namespace RichTextBoxEditor
             }
         }
         //MenuItem Ulozit jako
-        private void cbSaveAs_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CbSaveAs_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             SaveAs();
         }
@@ -191,7 +191,7 @@ namespace RichTextBoxEditor
             }
         }
         //MenuItem Vlastnosti
-        private void cbProperties_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CbProperties_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             string filename = string.Empty;
             string path = string.Empty;
@@ -218,7 +218,7 @@ namespace RichTextBoxEditor
                           + $"Vytvořen          : {createDate}" + Environment.NewLine);
         }
         //MenuItem Konec
-        private void cbClose_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CbClose_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (CancelAskSaveDocument())
             {
@@ -229,7 +229,7 @@ namespace RichTextBoxEditor
 
         //MenuItem Upravy
         //MenuItem Zpet
-        private void cbUndo_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void CbUndo_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (rtbEditor != null)
             {
@@ -237,18 +237,18 @@ namespace RichTextBoxEditor
             }
         }
 
-        private void cbUndo_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CbUndo_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             rtbEditor.Undo();
         }
 
-        private void rtbEditor_KeyUp(object sender, KeyEventArgs e)
+        private void RtbEditor_KeyUp(object sender, KeyEventArgs e)
         {
             rtbEditor.Undo();
             rtbEditor.Redo();
         }
         //MenuItem Vpred
-        private void cbRedo_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void CbRedo_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (rtbEditor != null)
             {
@@ -256,18 +256,18 @@ namespace RichTextBoxEditor
             }
         }
 
-        private void cbRedo_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CbRedo_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             rtbEditor.Redo();
         }
         //MenuItem Najdi
-        private void cbFind_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CbFind_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             spFindAndReplace.Visibility = Visibility.Visible;
             btnStartFind.Visibility = Visibility.Visible;
         }
 
-        private void btnStartFind_Click(object sender, RoutedEventArgs e)
+        private void BtnStartFind_Click(object sender, RoutedEventArgs e)
         {
             FindOrReplacePattern(false);
         }
@@ -282,7 +282,7 @@ namespace RichTextBoxEditor
             }
             else
             {
-                tbStatus.Text = $"Pocet shod: {Regex.Matches(allText.Text, tbxFind.Text).Count}";
+                tbStatus.Text = $"  Pocet shod: {Regex.Matches(allText.Text, tbxFind.Text).Count}  ";
                 for (TextPointer matchBeginPointer = rtbEditor.Document.ContentStart;
                     matchBeginPointer.CompareTo(rtbEditor.Document.ContentEnd) < 0;
                     matchBeginPointer = matchBeginPointer.GetNextContextPosition(LogicalDirection.Forward))
@@ -308,16 +308,25 @@ namespace RichTextBoxEditor
 
         }
 
-        private void btnCloseFind_Click(object sender, RoutedEventArgs e)
+        private void BtnCloseFind_Click(object sender, RoutedEventArgs e)
         {
             spFindAndReplace.Visibility=Visibility.Collapsed;
             tbReplace.Visibility=Visibility.Collapsed;
             tbxReplace.Visibility = Visibility.Collapsed;
             btnStartFind.Visibility=Visibility.Collapsed;
             btnStartReplace.Visibility = Visibility.Collapsed;
+            tbxFind.Text = string.Empty;
+            tbxReplace.Text = string.Empty;
+            tbStatus.Text = string.Empty;
+        }
+
+        private void RtbEditor_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+            allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
         }
         //MenuItem Zamen
-        private void cbReplace_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CbReplace_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             spFindAndReplace.Visibility = Visibility.Visible;
             tbReplace.Visibility = Visibility.Visible;
@@ -325,9 +334,27 @@ namespace RichTextBoxEditor
             btnStartReplace.Visibility=Visibility.Visible;
         }
 
-        private void btnStartReplace_Click(object sender, RoutedEventArgs e)
+        private void BtnStartReplace_Click(object sender, RoutedEventArgs e)
         {
             FindOrReplacePattern(true);
         }
+        //Najdi a zamen - Oznaceni textu v textboxech pri ziskani focusu
+        private void TextBox_LostMouseCapture(object sender, MouseEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            textBox.SelectAll();
+            textBox.LostMouseCapture -= TextBox_LostMouseCapture;
+        }
+
+        private void TextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            textBox.LostMouseCapture += TextBox_LostMouseCapture;
+        }
+
+        
+        
+
+
     }
 }
