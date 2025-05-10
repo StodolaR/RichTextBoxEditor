@@ -1,8 +1,10 @@
 ﻿using Microsoft.Win32;
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -242,6 +244,7 @@ namespace RichTextBoxEditor
 
         private void rtbEditor_KeyDown(object sender, KeyEventArgs e)
         {
+            
             rtbEditor.Undo();
             rtbEditor.Redo();
         }
@@ -257,6 +260,75 @@ namespace RichTextBoxEditor
         private void cbRedo_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             rtbEditor.Redo();
-        }       
+        }
+        //MenuItem Najdi
+        private void cbFind_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            spFindAndReplace.Visibility = Visibility.Visible;
+            btnStartFind.Visibility = Visibility.Visible;
+        }
+
+        private void btnStartFind_Click(object sender, RoutedEventArgs e)
+        {
+            FindOrReplacePattern(false);
+        }
+
+        private void FindOrReplacePattern(bool replace)
+        {
+            TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+            allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
+            if (string.IsNullOrWhiteSpace(allText.Text) || string.IsNullOrWhiteSpace(tbxFind.Text))
+            {
+                tbStatus.Text = "Zadna shoda";
+            }
+            else
+            {
+                tbStatus.Text = $"Pocet shod: {Regex.Matches(allText.Text, tbxFind.Text).Count}";
+                for (TextPointer matchBeginPointer = rtbEditor.Document.ContentStart;
+                    matchBeginPointer.CompareTo(rtbEditor.Document.ContentEnd) < 0;
+                    matchBeginPointer = matchBeginPointer.GetNextContextPosition(LogicalDirection.Forward))
+                {
+                    int matchBeginOffset;
+                    do
+                    {
+                        string textAfterStartMatchPointer = matchBeginPointer.GetTextInRun(LogicalDirection.Forward);
+                        matchBeginOffset = textAfterStartMatchPointer.IndexOf(tbxFind.Text);
+                        if (matchBeginOffset >= 0)
+                        {
+                            matchBeginPointer = matchBeginPointer.GetPositionAtOffset(matchBeginOffset);
+                            TextRange matchRange = new TextRange(matchBeginPointer, matchBeginPointer.GetPositionAtOffset(tbxFind.Text.Length));
+                            if (replace)
+                            {
+                                matchRange.Text = tbxReplace.Text;
+                            }                          
+                            matchRange.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.Yellow));
+                        }
+                    } while (matchBeginOffset >= 0 && replace);
+                }
+            }
+
+        }
+
+        private void btnCloseFind_Click(object sender, RoutedEventArgs e)
+        {
+            spFindAndReplace.Visibility=Visibility.Collapsed;
+            tbReplace.Visibility=Visibility.Collapsed;
+            tbxReplace.Visibility = Visibility.Collapsed;
+            btnStartFind.Visibility=Visibility.Collapsed;
+            btnStartReplace.Visibility = Visibility.Collapsed;
+        }
+        //MenuItem Zamen
+        private void cbReplace_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            spFindAndReplace.Visibility = Visibility.Visible;
+            tbReplace.Visibility = Visibility.Visible;
+            tbxReplace.Visibility = Visibility.Visible;
+            btnStartReplace.Visibility=Visibility.Visible;
+        }
+
+        private void btnStartReplace_Click(object sender, RoutedEventArgs e)
+        {
+            FindOrReplacePattern(true);
+        }
     }
 }

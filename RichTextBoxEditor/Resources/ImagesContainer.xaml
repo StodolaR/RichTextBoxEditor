@@ -10,6 +10,7 @@
     <Image Source="/Resources/Icons/SaveAs.png" x:Key="iSaveAs"/>
     <Image Source="/Resources/Icons/Properties.png" x:Key="iProperties"/>
     <Image Source="/Resources/Icons/Close.png" x:Key="iClose"/>
+    <Image Source="/Resources/Icons/Close.png" x:Key="iClose2"/>
     <Image Source="/Resources/Icons/Undo.png" x:Key="iUndo"/>
     <Image Source="/Resources/Icons/Undo.png" x:Key="iUndo2"/>
     <Image Source="/Resources/Icons/Redo.png" x:Key="iRedo"/>

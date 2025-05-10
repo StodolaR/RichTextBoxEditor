@@ -16,6 +16,8 @@
         <CommandBinding x:Name="cbProperties" Command="ApplicationCommands.Properties" Executed="cbProperties_Executed"/>
         <CommandBinding x:Name="cbUndo" Command="ApplicationCommands.Undo" Executed="cbUndo_Executed" CanExecute="cbUndo_CanExecute"/>
         <CommandBinding x:Name="cbRedo" Command="ApplicationCommands.Redo" Executed="cbRedo_Executed" CanExecute="cbRedo_CanExecute"/>
+        <CommandBinding x:Name="cbFind" Command="ApplicationCommands.Find" Executed="cbFind_Executed"/>
+        <CommandBinding x:Name="cbReplace" Command="ApplicationCommands.Replace" Executed="cbReplace_Executed"/>
     </Window.CommandBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top" x:Name="mainMenu">
@@ -49,8 +51,8 @@
                 <Separator/>
                 <MenuItem Header="Vybrat vše" Command="ApplicationCommands.SelectAll" Icon="{StaticResource iSelectAll}"/>
                     <Separator/>
-                <MenuItem Header="Najít" Icon="{StaticResource iFind}"/>
-                <MenuItem Header="Nahradit" Icon="{StaticResource iReplace}"/>
+                <MenuItem Header="Najít" Command="ApplicationCommands.Find" Icon="{StaticResource iFind}"/>
+                <MenuItem Header="Nahradit" Command="ApplicationCommands.Replace" Icon="{StaticResource iReplace}"/>
             </MenuItem>
             <MenuItem Header="Formát">
                 <MenuItem Header="Písmo">
@@ -84,8 +86,8 @@
             <Button x:Name="btnCopy" ToolTip="Kopírovat (Ctrl+C)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Copy" Content="{StaticResource iCopy2}"/>
             <Button x:Name="btnPaste" ToolTip="Vložit (Ctrl+V)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Paste" Content="{StaticResource iPaste2}"/>
             <Separator/>
-            <Button x:Name="btnFind" ToolTip="Najít" Content="{StaticResource iFind2}"/>
-            <Button x:Name="btnReplace" ToolTip="Najít a nahradit" Content="{StaticResource iReplace2}"/>
+            <Button x:Name="btnFind" ToolTip="Najít" Command="ApplicationCommands.Find" Content="{StaticResource iFind2}"/>
+            <Button x:Name="btnReplace" ToolTip="Najít a nahradit" Command="ApplicationCommands.Replace" Content="{StaticResource iReplace2}"/>
             <Separator/>
             <ComboBox x:Name="cbFFamily" Width="150" ToolTip="Název písma"/>
             <ComboBox x:Name="cbFSize" Width="50" ToolTip="Velikost písma"/>
@@ -107,9 +109,21 @@
             <Button x:Name="btnARight" ToolTip="Zarovnání vpravo" Content="{StaticResource iAlegnRight2}"/>
             <Button x:Name="btnAJustify" ToolTip="Zarovnání do bloku" Content="{StaticResource iAlegnJustify2}"/>
         </ToolBar>
-        <StatusBar DockPanel.Dock="Bottom">
+        <StatusBar DockPanel.Dock="Bottom" Height="25">
             <StatusBarItem>
                 <TextBlock x:Name="tbCursorPosition" Text="0/0"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal" Visibility="Collapsed" Name="spFindAndReplace">
+                    <TextBlock Text="Hledaný výraz: "/>
+                    <TextBox x:Name="tbxFind" Width="150"/>
+                    <TextBlock x:Name="tbReplace" Text="zaměň za" Visibility="Collapsed"/>
+                    <TextBox x:Name="tbxReplace" Width="150" Visibility="Collapsed"/>
+                    <Button x:Name="btnStartFind" Content="Najdi" Click="btnStartFind_Click" Visibility="Collapsed"/>
+                    <Button x:Name="btnStartReplace" Content="Zaměň" Click="btnStartReplace_Click" Visibility="Collapsed"/>
+                    <TextBlock x:Name="tbStatus"/>
+                    <Button x:Name="btnCloseFind" Content="{StaticResource iClose2}" Click="btnCloseFind_Click" Width="17"/>
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
         <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="rtbEditor_SelectionChanged" KeyDown="rtbEditor_KeyDown">
