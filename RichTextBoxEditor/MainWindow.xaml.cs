@@ -242,9 +242,8 @@ namespace RichTextBoxEditor
             rtbEditor.Undo();
         }
 
-        private void rtbEditor_KeyDown(object sender, KeyEventArgs e)
+        private void rtbEditor_KeyUp(object sender, KeyEventArgs e)
         {
-            
             rtbEditor.Undo();
             rtbEditor.Redo();
         }

@@ -126,7 +126,7 @@
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>
-        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="rtbEditor_SelectionChanged" KeyDown="rtbEditor_KeyDown">
+        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="rtbEditor_SelectionChanged" KeyUp="rtbEditor_KeyUp">
             <RichTextBox.Resources>
                 <Style TargetType="Paragraph">
                     <Setter Property="Margin" Value="0"/>
