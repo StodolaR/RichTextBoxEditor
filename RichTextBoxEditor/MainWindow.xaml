@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RichTextBoxEditor"
         mc:Ignorable="d"
-        Title="Bez názvu" Width="800" Height="450" WindowState="Maximized" 
+        Title="Bez názvu" Width="800" Height="450" 
         Icon="/Resources/Icons/RTBEditor.ico" x:Name="mainWindow">
     <Window.CommandBindings>
         <CommandBinding x:Name="cbNew" Command="ApplicationCommands.New" Executed="CbNew_Executed"/>
@@ -56,9 +56,12 @@
             </MenuItem>
             <MenuItem Header="Formát">
                 <MenuItem Header="Písmo">
-                    <MenuItem Header="Tučné" Icon="{StaticResource iBold}"/>
-                    <MenuItem Header="Kurzíva" Icon="{StaticResource iItalic}"/>
-                    <MenuItem Header="Podtržené" Icon="{StaticResource iUnderline}"/>
+                    <MenuItem x:Name="miBold" Header="Tučné" Click="miBold_Click" Icon="{StaticResource iBold}" 
+                              Command="EditingCommands.ToggleBold" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
+                    <MenuItem Name="miItalic" Header="Kurzíva" Click="miItalic_Click" Icon="{StaticResource iItalic}" 
+                              Command="EditingCommands.ToggleItalic" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
+                    <MenuItem Name="miUnderline" Header="Podtržené" Click="miUnderline_Click" Icon="{StaticResource iUnderline}" 
+                              Command="EditingCommands.ToggleUnderline" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
                     <Separator/>
                 </MenuItem>
                 <MenuItem Header="Zarovnání">
@@ -89,12 +92,17 @@
             <Button x:Name="btnFind" ToolTip="Najít" Command="ApplicationCommands.Find" Content="{StaticResource iFind2}"/>
             <Button x:Name="btnReplace" ToolTip="Najít a nahradit" Command="ApplicationCommands.Replace" Content="{StaticResource iReplace2}"/>
             <Separator/>
-            <ComboBox x:Name="cbFFamily" Width="150" ToolTip="Název písma"/>
-            <ComboBox x:Name="cbFSize" Width="50" ToolTip="Velikost písma"/>
+            <ComboBox x:Name="cbFFamily" Width="150" ToolTip="Název písma" SelectionChanged="cbFFamily_SelectionChanged" IsEditable="True" 
+                      IsReadOnly="True"/>
+            <ComboBox x:Name="cbFSize" Width="50" ToolTip="Velikost písma" SelectionChanged="cbFSize_SelectionChanged" KeyUp="cbFSize_KeyUp" 
+                      IsEditable="True" IsReadOnly="False" IsTextSearchEnabled="False"/>
             <Separator/>
-            <Button x:Name="btnBold" ToolTip="Tučné" Content="{StaticResource iBold2}"/>
-            <Button x:Name="btnItalic" ToolTip="Kurzíva" Content="{StaticResource iItalic2}"/>
-            <Button x:Name="btnUnderline" ToolTip="Podtržené" Content="{StaticResource iUnderline2}"/>
+            <ToggleButton x:Name="btnBold" ToolTip="Tučné" Command="EditingCommands.ToggleBold" 
+                          CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iBold2}" Click="btnBold_Click"/>
+            <ToggleButton x:Name="btnItalic" ToolTip="Kurzíva" Command="EditingCommands.ToggleItalic" 
+                          CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iItalic2}" Click="btnItalic_Click"/>
+            <ToggleButton x:Name="btnUnderline" ToolTip="Podtržené" Command="EditingCommands.ToggleUnderline" 
+                          CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iUnderline2}" Click="btnUnderline_Click"/>
             <Separator/>
             <Button x:Name="btnColor" ToolTip="Barva písma">
                 <StackPanel>
@@ -104,10 +112,10 @@
             </Button>
             <Button x:Name="btnColors" Height="30" ToolTip="Vyber barvu" Content="{StaticResource iDown}"/>
             <Separator/>
-            <Button x:Name="btnALeft" ToolTip="Zarovnání vlevo" Content="{StaticResource iAlegnLeft2}"/>
-            <Button x:Name="btnACenter" ToolTip="Zarovnání uprostřed" Content="{StaticResource iAlegnCenter2}"/>
-            <Button x:Name="btnARight" ToolTip="Zarovnání vpravo" Content="{StaticResource iAlegnRight2}"/>
-            <Button x:Name="btnAJustify" ToolTip="Zarovnání do bloku" Content="{StaticResource iAlegnJustify2}"/>
+            <ToggleButton x:Name="btnALeft" ToolTip="Zarovnání vlevo" Content="{StaticResource iAlegnLeft2}"/>
+            <ToggleButton x:Name="btnACenter" ToolTip="Zarovnání uprostřed" Content="{StaticResource iAlegnCenter2}"/>
+            <ToggleButton x:Name="btnARight" ToolTip="Zarovnání vpravo" Content="{StaticResource iAlegnRight2}"/>
+            <ToggleButton x:Name="btnAJustify" ToolTip="Zarovnání do bloku" Content="{StaticResource iAlegnJustify2}"/>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom" Height="25">
             <StatusBarItem>
@@ -126,7 +134,8 @@
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>
-        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="RtbEditor_SelectionChanged" KeyUp="RtbEditor_KeyUp" GotFocus="RtbEditor_GotFocus">
+        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="RtbEditor_SelectionChanged" 
+                     KeyUp="RtbEditor_KeyUp" GotFocus="RtbEditor_GotFocus" PreviewTextInput="rtbEditor_PreviewTextInput">
             <RichTextBox.Resources>
                 <Style TargetType="Paragraph">
                     <Setter Property="Margin" Value="0"/>
