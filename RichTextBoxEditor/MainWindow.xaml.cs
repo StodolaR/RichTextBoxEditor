@@ -110,7 +110,7 @@ namespace RichTextBoxEditor
             btnARight.IsChecked = miARight.IsChecked = temp.Equals(TextAlignment.Right);
             btnAJustify.IsChecked = miAJustify.IsChecked = temp.Equals(TextAlignment.Justify);
         }
-        private void AddToLastDocs()
+        private void AddToLastDocs() //TODO odstranit aktualni dokument
         {
             for (int i = 0 ; i < miLastDoc.Items.Count; i++)
             {
@@ -356,7 +356,6 @@ namespace RichTextBoxEditor
                     } while (matchBeginOffset >= 0 && replace);
                 }
             }
-
         }
         private void BtnCloseFind_Click(object sender, RoutedEventArgs e)
         {
@@ -478,17 +477,35 @@ namespace RichTextBoxEditor
         }
 
         //Menuitem Zarovnani
-        //Menuitem Vlevo
-        private void MiALeft_Click(object sender, RoutedEventArgs e)
+        private void Align_Click(object sender, RoutedEventArgs e)
         {
+            string senderDirection = string.Empty;
             UncheckAlignMenuItems();
-            miALeft.IsChecked = true;
-            btnALeft.IsChecked = true;
-        }
-        private void BtnALeft_Click(object sender, RoutedEventArgs e)
-        {
-            UncheckAlignMenuItems();
-            miALeft.IsChecked = true;
+            if (sender is MenuItem)
+            {
+                MenuItem alignItem = (MenuItem)sender;
+                senderDirection = alignItem.Name.Substring(3);
+            }
+            if (sender is RadioButton)
+            {
+                RadioButton alignButton = (RadioButton)sender;
+                senderDirection = alignButton.Name.Substring(4);
+            }
+            switch(senderDirection)
+            {
+                case "Left": miALeft.IsChecked = true;
+                             btnALeft.IsChecked = true; 
+                             break;
+                case "Center": miACenter.IsChecked = true;
+                               btnACenter.IsChecked = true; 
+                               break;
+                case "Right": miARight.IsChecked = true;
+                              btnARight.IsChecked = true;
+                              break;
+                case "Justify": miAJustify.IsChecked = true;
+                                btnAJustify.IsChecked = true;
+                                break;
+            }            
         }
         private void UncheckAlignMenuItems()
         {
@@ -496,45 +513,6 @@ namespace RichTextBoxEditor
             miACenter.IsChecked = false;
             miARight.IsChecked = false;
             miAJustify.IsChecked = false;
-        }
-
-        //Menuitem Na stred
-        private void MiACenter_Click(object sender, RoutedEventArgs e)
-        {
-            UncheckAlignMenuItems();
-            miACenter.IsChecked = true;
-            btnACenter.IsChecked = true;
-        }
-        private void BtnACenter_Click(object sender, RoutedEventArgs e)
-        {
-            UncheckAlignMenuItems();
-            miACenter.IsChecked = true;
-        }
-
-        //MenuItem Vpravo
-        private void MiARight_Click(object sender, RoutedEventArgs e)
-        {
-            UncheckAlignMenuItems();
-            miARight.IsChecked = true;
-            btnARight.IsChecked = true;
-        }
-        private void BtnARight_Click(object sender, RoutedEventArgs e)
-        {
-            UncheckAlignMenuItems();
-            miARight.IsChecked = true;
-        }
-
-        //MenuItem Do bloku
-        private void MiAJustify_Click(object sender, RoutedEventArgs e)
-        {
-            UncheckAlignMenuItems();
-            miAJustify.IsChecked = true;
-            btnAJustify.IsChecked = true;
-        }
-        private void BtnAJustify_Click(object sender, RoutedEventArgs e)
-        {
-            UncheckAlignMenuItems();
-            miAJustify.IsChecked = true;
         }
 
         //Combobox FontFamily
@@ -550,7 +528,6 @@ namespace RichTextBoxEditor
             rtbEditor.Selection.ApplyPropertyValue(FontSizeProperty, cbFSize.SelectedItem);
             rtbEditor.Focus();
         }
-
         private void CbFSize_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)

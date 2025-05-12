@@ -65,13 +65,13 @@
                     <Separator/>
                 </MenuItem>
                 <MenuItem Header="Zarovnání">
-                    <MenuItem x:Name="miALeft" Header="Vlevo" Click="MiALeft_Click" Icon="{StaticResource iAlignLeft}" 
+                    <MenuItem x:Name="miALeft" Header="Vlevo" Click="Align_Click" Icon="{StaticResource iAlignLeft}" 
                               Command="EditingCommands.AlignLeft" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
-                    <MenuItem x:Name="miACenter" Header="Na střed" Click="MiACenter_Click" Icon="{StaticResource iAlignCenter}"
+                    <MenuItem x:Name="miACenter" Header="Na střed" Click="Align_Click" Icon="{StaticResource iAlignCenter}"
                               Command="EditingCommands.AlignCenter" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
-                    <MenuItem x:Name="miARight" Header="Vpravo" Click="MiARight_Click" Icon="{StaticResource iAlignRight}"
+                    <MenuItem x:Name="miARight" Header="Vpravo" Click="Align_Click" Icon="{StaticResource iAlignRight}"
                               Command="EditingCommands.AlignRight" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
-                    <MenuItem x:Name="miAJustify" Header="Do bloku" Click="MiAJustify_Click" Icon="{StaticResource iAlignJustify}"
+                    <MenuItem x:Name="miAJustify" Header="Do bloku" Click="Align_Click" Icon="{StaticResource iAlignJustify}"
                               Command="EditingCommands.AlignJustify" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
                 </MenuItem>
             </MenuItem>
@@ -117,13 +117,13 @@
             <Button x:Name="btnColors" Height="30" ToolTip="Vyber barvu" Content="{StaticResource iDown}"/>
             <Separator/>
             <RadioButton x:Name="btnALeft" ToolTip="Zarovnání vlevo" Command="EditingCommands.AlignLeft" 
-                         CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignLeft2}" Click="BtnALeft_Click"/>
+                         CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignLeft2}" Click="Align_Click"/>
             <RadioButton x:Name="btnACenter" ToolTip="Zarovnání uprostřed" Command="EditingCommands.AlignCenter" 
-                         CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignCenter2}" Click="BtnACenter_Click"/>
+                         CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignCenter2}" Click="Align_Click"/>
             <RadioButton x:Name="btnARight" ToolTip="Zarovnání vpravo" Command="EditingCommands.AlignRight" 
-                         CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignRight2}" Click="BtnARight_Click"/>
+                         CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignRight2}" Click="Align_Click"/>
             <RadioButton x:Name="btnAJustify" ToolTip="Zarovnání do bloku" Command="EditingCommands.AlignJustify" 
-                         CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignJustify2}" Click="BtnAJustify_Click"/>
+                         CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignJustify2}" Click="Align_Click"/>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom" Height="25">
             <StatusBarItem>
