@@ -33,12 +33,12 @@
     <Image Source="/Resources/Icons/Underline.png" x:Key="iUnderline"/>
     <Image Source="/Resources/Icons/Underline.png" x:Key="iUnderline2"/>
     <Image Source="/Resources/Icons/Down.png" Width="8" x:Key="iDown"/>
-    <Image Source="/Resources/Icons/AlignLeft.png" x:Key="iAlegnLeft"/>
-    <Image Source="/Resources/Icons/AlignLeft.png" x:Key="iAlegnLeft2"/>
-    <Image Source="/Resources/Icons/AlignCenter.png" x:Key="iAlegnCenter"/>
-    <Image Source="/Resources/Icons/AlignCenter.png" x:Key="iAlegnCenter2"/>
-    <Image Source="/Resources/Icons/AlignRight.png" x:Key="iAlegnRight"/>
-    <Image Source="/Resources/Icons/AlignRight.png" x:Key="iAlegnRight2"/>
-    <Image Source="/Resources/Icons/AlignJustify.png" x:Key="iAlegnJustify"/>
-    <Image Source="/Resources/Icons/AlignJustify.png" x:Key="iAlegnJustify2"/>
+    <Image Source="/Resources/Icons/AlignLeft.png" x:Key="iAlignLeft"/>
+    <Image Source="/Resources/Icons/AlignLeft.png" x:Key="iAlignLeft2"/>
+    <Image Source="/Resources/Icons/AlignCenter.png" x:Key="iAlignCenter"/>
+    <Image Source="/Resources/Icons/AlignCenter.png" x:Key="iAlignCenter2"/>
+    <Image Source="/Resources/Icons/AlignRight.png" x:Key="iAlignRight"/>
+    <Image Source="/Resources/Icons/AlignRight.png" x:Key="iAlignRight2"/>
+    <Image Source="/Resources/Icons/AlignJustify.png" x:Key="iAlignJustify"/>
+    <Image Source="/Resources/Icons/AlignJustify.png" x:Key="iAlignJustify2"/>
 </ResourceDictionary>

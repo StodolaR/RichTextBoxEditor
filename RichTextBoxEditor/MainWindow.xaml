@@ -56,19 +56,23 @@
             </MenuItem>
             <MenuItem Header="Formát">
                 <MenuItem Header="Písmo">
-                    <MenuItem x:Name="miBold" Header="Tučné" Click="miBold_Click" Icon="{StaticResource iBold}" 
+                    <MenuItem x:Name="miBold" Header="Tučné" Click="MiBold_Click" Icon="{StaticResource iBold}" 
                               Command="EditingCommands.ToggleBold" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
-                    <MenuItem Name="miItalic" Header="Kurzíva" Click="miItalic_Click" Icon="{StaticResource iItalic}" 
+                    <MenuItem Name="miItalic" Header="Kurzíva" Click="MiItalic_Click" Icon="{StaticResource iItalic}" 
                               Command="EditingCommands.ToggleItalic" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
-                    <MenuItem Name="miUnderline" Header="Podtržené" Click="miUnderline_Click" Icon="{StaticResource iUnderline}" 
+                    <MenuItem Name="miUnderline" Header="Podtržené" Click="MiUnderline_Click" Icon="{StaticResource iUnderline}" 
                               Command="EditingCommands.ToggleUnderline" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
                     <Separator/>
                 </MenuItem>
                 <MenuItem Header="Zarovnání">
-                    <MenuItem Header="Vlevo" Icon="{StaticResource iAlegnLeft}"/>
-                    <MenuItem Header="Na střed" Icon="{StaticResource iAlegnCenter}"/>
-                    <MenuItem Header="Vpravo" Icon="{StaticResource iAlegnRight}"/>
-                    <MenuItem Header="Do bloku" Icon="{StaticResource iAlegnJustify}"/>
+                    <MenuItem x:Name="miALeft" Header="Vlevo" Click="MiALeft_Click" Icon="{StaticResource iAlignLeft}" 
+                              Command="EditingCommands.AlignLeft" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
+                    <MenuItem x:Name="miACenter" Header="Na střed" Click="MiACenter_Click" Icon="{StaticResource iAlignCenter}"
+                              Command="EditingCommands.AlignCenter" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
+                    <MenuItem x:Name="miARight" Header="Vpravo" Click="MiARight_Click" Icon="{StaticResource iAlignRight}"
+                              Command="EditingCommands.AlignRight" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
+                    <MenuItem x:Name="miAJustify" Header="Do bloku" Click="MiAJustify_Click" Icon="{StaticResource iAlignJustify}"
+                              Command="EditingCommands.AlignJustify" CommandTarget="{Binding ElementName=rtbEditor}" IsCheckable="True"/>
                 </MenuItem>
             </MenuItem>
         </Menu>
@@ -92,17 +96,17 @@
             <Button x:Name="btnFind" ToolTip="Najít" Command="ApplicationCommands.Find" Content="{StaticResource iFind2}"/>
             <Button x:Name="btnReplace" ToolTip="Najít a nahradit" Command="ApplicationCommands.Replace" Content="{StaticResource iReplace2}"/>
             <Separator/>
-            <ComboBox x:Name="cbFFamily" Width="150" ToolTip="Název písma" SelectionChanged="cbFFamily_SelectionChanged" IsEditable="True" 
+            <ComboBox x:Name="cbFFamily" Width="150" ToolTip="Název písma" SelectionChanged="CbFFamily_SelectionChanged" IsEditable="True" 
                       IsReadOnly="True"/>
-            <ComboBox x:Name="cbFSize" Width="50" ToolTip="Velikost písma" SelectionChanged="cbFSize_SelectionChanged" KeyUp="cbFSize_KeyUp" 
+            <ComboBox x:Name="cbFSize" Width="50" ToolTip="Velikost písma" SelectionChanged="CbFSize_SelectionChanged" KeyUp="CbFSize_KeyUp" 
                       IsEditable="True" IsReadOnly="False" IsTextSearchEnabled="False"/>
             <Separator/>
             <ToggleButton x:Name="btnBold" ToolTip="Tučné" Command="EditingCommands.ToggleBold" 
-                          CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iBold2}" Click="btnBold_Click"/>
+                          CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iBold2}" Click="BtnBold_Click"/>
             <ToggleButton x:Name="btnItalic" ToolTip="Kurzíva" Command="EditingCommands.ToggleItalic" 
-                          CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iItalic2}" Click="btnItalic_Click"/>
+                          CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iItalic2}" Click="BtnItalic_Click"/>
             <ToggleButton x:Name="btnUnderline" ToolTip="Podtržené" Command="EditingCommands.ToggleUnderline" 
-                          CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iUnderline2}" Click="btnUnderline_Click"/>
+                          CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iUnderline2}" Click="BtnUnderline_Click"/>
             <Separator/>
             <Button x:Name="btnColor" ToolTip="Barva písma">
                 <StackPanel>
@@ -112,10 +116,14 @@
             </Button>
             <Button x:Name="btnColors" Height="30" ToolTip="Vyber barvu" Content="{StaticResource iDown}"/>
             <Separator/>
-            <ToggleButton x:Name="btnALeft" ToolTip="Zarovnání vlevo" Content="{StaticResource iAlegnLeft2}"/>
-            <ToggleButton x:Name="btnACenter" ToolTip="Zarovnání uprostřed" Content="{StaticResource iAlegnCenter2}"/>
-            <ToggleButton x:Name="btnARight" ToolTip="Zarovnání vpravo" Content="{StaticResource iAlegnRight2}"/>
-            <ToggleButton x:Name="btnAJustify" ToolTip="Zarovnání do bloku" Content="{StaticResource iAlegnJustify2}"/>
+            <RadioButton x:Name="btnALeft" ToolTip="Zarovnání vlevo" Command="EditingCommands.AlignLeft" 
+                         CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignLeft2}" Click="BtnALeft_Click"/>
+            <RadioButton x:Name="btnACenter" ToolTip="Zarovnání uprostřed" Command="EditingCommands.AlignCenter" 
+                         CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignCenter2}" Click="BtnACenter_Click"/>
+            <RadioButton x:Name="btnARight" ToolTip="Zarovnání vpravo" Command="EditingCommands.AlignRight" 
+                         CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignRight2}" Click="BtnARight_Click"/>
+            <RadioButton x:Name="btnAJustify" ToolTip="Zarovnání do bloku" Command="EditingCommands.AlignJustify" 
+                         CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignJustify2}" Click="BtnAJustify_Click"/>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom" Height="25">
             <StatusBarItem>
@@ -135,7 +143,7 @@
             </StatusBarItem>
         </StatusBar>
         <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="RtbEditor_SelectionChanged" 
-                     KeyUp="RtbEditor_KeyUp" GotFocus="RtbEditor_GotFocus" PreviewTextInput="rtbEditor_PreviewTextInput">
+                     KeyUp="RtbEditor_KeyUp" GotFocus="RtbEditor_GotFocus" PreviewTextInput="RtbEditor_PreviewTextInput">
             <RichTextBox.Resources>
                 <Style TargetType="Paragraph">
                     <Setter Property="Margin" Value="0"/>

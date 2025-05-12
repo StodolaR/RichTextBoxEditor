@@ -101,6 +101,12 @@ namespace RichTextBoxEditor
             btnItalic.IsChecked = miItalic.IsChecked = temp != DependencyProperty.UnsetValue && temp.Equals(FontStyles.Italic);
             temp = rtbEditor.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
             btnUnderline.IsChecked = miUnderline.IsChecked = temp != DependencyProperty.UnsetValue && temp.Equals(TextDecorations.Underline);
+            temp = rtbEditor.CaretPosition.Paragraph.TextAlignment;
+            UncheckAlignMenuItems();
+            btnALeft.IsChecked = miALeft.IsChecked = temp.Equals(TextAlignment.Left);
+            btnACenter.IsChecked = miACenter.IsChecked = temp.Equals(TextAlignment.Center);
+            btnARight.IsChecked = miARight.IsChecked = temp.Equals(TextAlignment.Right);
+            btnAJustify.IsChecked = miAJustify.IsChecked = temp.Equals(TextAlignment.Justify);
         }
         private void AddToLastDocs()
         {
@@ -401,7 +407,7 @@ namespace RichTextBoxEditor
 
         //Menuitem Pismo
         //Menuitem Tucne
-        private void rtbEditor_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void RtbEditor_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (!firstEdit) return;
             Run run = new Run(e.Text, rtbEditor.CaretPosition);
@@ -431,11 +437,11 @@ namespace RichTextBoxEditor
             rtbEditor.CaretPosition = run.ElementEnd;
             firstEdit = false;
         }
-        private void miBold_Click(object sender, RoutedEventArgs e)
+        private void MiBold_Click(object sender, RoutedEventArgs e)
         {
             btnBold.IsChecked = miBold.IsChecked;
         }
-        private void btnBold_Click(object sender, RoutedEventArgs e)
+        private void BtnBold_Click(object sender, RoutedEventArgs e)
         {
             if(btnBold.IsChecked != null)
             {
@@ -444,11 +450,11 @@ namespace RichTextBoxEditor
         }
 
         //MenuItem Kurziva
-        private void miItalic_Click(object sender, RoutedEventArgs e)
+        private void MiItalic_Click(object sender, RoutedEventArgs e)
         {
             btnItalic.IsChecked = miItalic.IsChecked;
         }
-        private void btnItalic_Click(object sender, RoutedEventArgs e)
+        private void BtnItalic_Click(object sender, RoutedEventArgs e)
         {
             if(btnItalic.IsChecked != null)
             {
@@ -457,11 +463,11 @@ namespace RichTextBoxEditor
         }
 
         //MenuItem Podtrzene
-        private void miUnderline_Click(object sender, RoutedEventArgs e)
+        private void MiUnderline_Click(object sender, RoutedEventArgs e)
         {
             btnUnderline.IsChecked = miUnderline.IsChecked;
         }
-        private void btnUnderline_Click(object sender, RoutedEventArgs e)
+        private void BtnUnderline_Click(object sender, RoutedEventArgs e)
         {
             if (btnUnderline.IsChecked != null)
             {
@@ -469,21 +475,81 @@ namespace RichTextBoxEditor
             }
         }
 
+        //Menuitem Zarovnani
+        //Menuitem Vlevo
+        private void MiALeft_Click(object sender, RoutedEventArgs e)
+        {
+            UncheckAlignMenuItems();
+            miALeft.IsChecked = true;
+            btnALeft.IsChecked = true;
+        }
+        private void BtnALeft_Click(object sender, RoutedEventArgs e)
+        {
+            UncheckAlignMenuItems();
+            miALeft.IsChecked = true;
+        }
+        private void UncheckAlignMenuItems()
+        {
+            miALeft.IsChecked = false;
+            miACenter.IsChecked = false;
+            miARight.IsChecked = false;
+            miAJustify.IsChecked = false;
+        }
+
+        //Menuitem Na stred
+        private void MiACenter_Click(object sender, RoutedEventArgs e)
+        {
+            UncheckAlignMenuItems();
+            miACenter.IsChecked = true;
+            btnACenter.IsChecked = true;
+        }
+        private void BtnACenter_Click(object sender, RoutedEventArgs e)
+        {
+            UncheckAlignMenuItems();
+            miACenter.IsChecked = true;
+        }
+
+        //MenuItem Vpravo
+        private void MiARight_Click(object sender, RoutedEventArgs e)
+        {
+            UncheckAlignMenuItems();
+            miARight.IsChecked = true;
+            btnARight.IsChecked = true;
+        }
+        private void BtnARight_Click(object sender, RoutedEventArgs e)
+        {
+            UncheckAlignMenuItems();
+            miARight.IsChecked = true;
+        }
+
+        //MenuItem Do bloku
+        private void MiAJustify_Click(object sender, RoutedEventArgs e)
+        {
+            UncheckAlignMenuItems();
+            miAJustify.IsChecked = true;
+            btnAJustify.IsChecked = true;
+        }
+        private void BtnAJustify_Click(object sender, RoutedEventArgs e)
+        {
+            UncheckAlignMenuItems();
+            miAJustify.IsChecked = true;
+        }
+
         //Combobox FontFamily
-        private void cbFFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CbFFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             rtbEditor.Selection.ApplyPropertyValue(FontFamilyProperty, cbFFamily.SelectedItem);
             rtbEditor.Focus();
         }
 
         //Combobox FontSize
-        private void cbFSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CbFSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             rtbEditor.Selection.ApplyPropertyValue(FontSizeProperty, cbFSize.SelectedItem);
             rtbEditor.Focus();
         }
 
-        private void cbFSize_KeyUp(object sender, KeyEventArgs e)
+        private void CbFSize_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -493,6 +559,7 @@ namespace RichTextBoxEditor
                 }
                 rtbEditor.Focus();
             }
-        }        
+        }
+
     }
 }
