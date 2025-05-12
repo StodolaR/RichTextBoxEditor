@@ -97,7 +97,7 @@
             <Button x:Name="btnReplace" ToolTip="Najít a nahradit" Command="ApplicationCommands.Replace" Content="{StaticResource iReplace2}"/>
             <Separator/>
             <ComboBox x:Name="cbFFamily" Width="150" ToolTip="Název písma" SelectionChanged="CbFFamily_SelectionChanged" IsEditable="True" 
-                      IsReadOnly="True"/>
+                      IsReadOnly="True" IsTextSearchEnabled="False"/>
             <ComboBox x:Name="cbFSize" Width="50" ToolTip="Velikost písma" SelectionChanged="CbFSize_SelectionChanged" KeyUp="CbFSize_KeyUp" 
                       IsEditable="True" IsReadOnly="False" IsTextSearchEnabled="False"/>
             <Separator/>
@@ -143,10 +143,10 @@
             </StatusBarItem>
         </StatusBar>
         <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="RtbEditor_SelectionChanged" 
-                     KeyUp="RtbEditor_KeyUp" GotFocus="RtbEditor_GotFocus" PreviewTextInput="RtbEditor_PreviewTextInput">
+                     KeyUp="RtbEditor_KeyUp" GotFocus="RtbEditor_GotFocus" PreviewTextInput="RtbEditor_PreviewTextInput" Padding="10">
             <RichTextBox.Resources>
                 <Style TargetType="Paragraph">
-                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Margin" Value="5"/>
                 </Style>
             </RichTextBox.Resources>
         </RichTextBox>
