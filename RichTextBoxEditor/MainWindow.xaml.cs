@@ -289,9 +289,15 @@ namespace RichTextBoxEditor
         }
         private void RtbEditor_KeyUp(object sender, KeyEventArgs e)
         {
-            //TODO Undo Redo
-            //rtbEditor.Undo();
-            //rtbEditor.Redo();
+            if(!firstEdit)
+            {
+                rtbEditor.Undo();
+                rtbEditor.Redo();
+            }
+            else
+            {
+                firstEdit = false;
+            }
         }
 
         //MenuItem Vpred
@@ -434,8 +440,7 @@ namespace RichTextBoxEditor
             }
             rtbEditor.EndChange();
             e.Handled = true;
-            rtbEditor.CaretPosition = run.ElementEnd;
-            firstEdit = false;
+            rtbEditor.CaretPosition = run.ElementEnd;           
         }
         private void MiBold_Click(object sender, RoutedEventArgs e)
         {
