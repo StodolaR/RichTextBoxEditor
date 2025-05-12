@@ -25,6 +25,7 @@ namespace RichTextBoxEditor
         private string filePath;
         private bool edited;
         private bool firstEdit;
+        private bool firstFontInitialized;
         
         public MainWindow()
         {
@@ -32,6 +33,7 @@ namespace RichTextBoxEditor
             filePath = string.Empty;
             edited = false;
             firstEdit = true;
+            firstFontInitialized = false;
             cbFFamily.ItemsSource = Fonts.SystemFontFamilies;
             cbFSize.ItemsSource = new double[] { 8, 10, 12, 16, 20, 24, 32, 40, 48 };
             rtbEditor.Focus();
@@ -110,7 +112,7 @@ namespace RichTextBoxEditor
             btnARight.IsChecked = miARight.IsChecked = temp.Equals(TextAlignment.Right);
             btnAJustify.IsChecked = miAJustify.IsChecked = temp.Equals(TextAlignment.Justify);
         }
-        private void AddToLastDocs() //TODO odstranit aktualni dokument
+        private void AddToLastDocs()
         {
             for (int i = 0 ; i < miLastDoc.Items.Count; i++)
             {
@@ -291,9 +293,16 @@ namespace RichTextBoxEditor
         }
         private void RtbEditor_KeyUp(object sender, KeyEventArgs e)
         {
-            //TODO UndoRedo
-            //rtbEditor.Undo();
-            //rtbEditor.Redo();
+            if(!firstFontInitialized)
+            {
+                if(rtbEditor.Document.ContentStart.GetPositionAtOffset(4).CompareTo(rtbEditor.Document.ContentEnd) == -1)
+                {
+                    firstFontInitialized = true;
+                }
+                return;
+            }
+            rtbEditor.Undo();
+            rtbEditor.Redo();
         }
 
         //MenuItem Vpred
