@@ -101,8 +101,10 @@ namespace RichTextBoxEditor
             btnItalic.IsChecked = miItalic.IsChecked = temp != DependencyProperty.UnsetValue && temp.Equals(FontStyles.Italic);
             temp = rtbEditor.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
             btnUnderline.IsChecked = miUnderline.IsChecked = temp != DependencyProperty.UnsetValue && temp.Equals(TextDecorations.Underline);
-            temp = rtbEditor.CaretPosition.Paragraph.TextAlignment;
-            UncheckAlignMenuItems();
+            if (rtbEditor.CaretPosition.Paragraph != null)
+            {
+                temp = rtbEditor.CaretPosition.Paragraph.TextAlignment;
+            }
             btnALeft.IsChecked = miALeft.IsChecked = temp.Equals(TextAlignment.Left);
             btnACenter.IsChecked = miACenter.IsChecked = temp.Equals(TextAlignment.Center);
             btnARight.IsChecked = miARight.IsChecked = temp.Equals(TextAlignment.Right);
@@ -289,15 +291,9 @@ namespace RichTextBoxEditor
         }
         private void RtbEditor_KeyUp(object sender, KeyEventArgs e)
         {
-            if(!firstEdit)
-            {
-                rtbEditor.Undo();
-                rtbEditor.Redo();
-            }
-            else
-            {
-                firstEdit = false;
-            }
+            //TODO UndoRedo
+            //rtbEditor.Undo();
+            //rtbEditor.Redo();
         }
 
         //MenuItem Vpred
@@ -440,7 +436,8 @@ namespace RichTextBoxEditor
             }
             rtbEditor.EndChange();
             e.Handled = true;
-            rtbEditor.CaretPosition = run.ElementEnd;           
+            rtbEditor.CaretPosition = run.ElementEnd; 
+            firstEdit = false;
         }
         private void MiBold_Click(object sender, RoutedEventArgs e)
         {

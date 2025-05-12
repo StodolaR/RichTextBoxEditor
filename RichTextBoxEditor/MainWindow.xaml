@@ -143,10 +143,10 @@
             </StatusBarItem>
         </StatusBar>
         <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="RtbEditor_SelectionChanged" 
-                     KeyUp="RtbEditor_KeyUp" GotFocus="RtbEditor_GotFocus" PreviewTextInput="RtbEditor_PreviewTextInput" Padding="10">
+                     KeyUp="RtbEditor_KeyUp" GotFocus="RtbEditor_GotFocus" PreviewTextInput="RtbEditor_PreviewTextInput" Padding="5,10">
             <RichTextBox.Resources>
                 <Style TargetType="Paragraph">
-                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Margin" Value="0,5,0,0"/>
                 </Style>
             </RichTextBox.Resources>
         </RichTextBox>
