@@ -295,7 +295,7 @@ namespace RichTextBoxEditor
         {
             if(!firstFontInitialized)
             {
-                if(rtbEditor.Document.ContentStart.GetPositionAtOffset(4).CompareTo(rtbEditor.Document.ContentEnd) == -1)
+                if(rtbEditor.Document.ContentStart.GetPositionAtOffset(5).CompareTo(rtbEditor.Document.ContentEnd) == -1)
                 {
                     firstFontInitialized = true;
                 }

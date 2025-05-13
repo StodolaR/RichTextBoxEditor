@@ -97,7 +97,13 @@
             <Button x:Name="btnReplace" ToolTip="Najít a nahradit" Command="ApplicationCommands.Replace" Content="{StaticResource iReplace2}"/>
             <Separator/>
             <ComboBox x:Name="cbFFamily" Width="150" ToolTip="Název písma" SelectionChanged="CbFFamily_SelectionChanged" IsEditable="True" 
-                      IsReadOnly="True" IsTextSearchEnabled="False"/>
+                      IsReadOnly="True" IsTextSearchEnabled="False" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontFamily="{Binding}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <ComboBox x:Name="cbFSize" Width="50" ToolTip="Velikost písma" SelectionChanged="CbFSize_SelectionChanged" KeyUp="CbFSize_KeyUp" 
                       IsEditable="True" IsReadOnly="False" IsTextSearchEnabled="False"/>
             <Separator/>
