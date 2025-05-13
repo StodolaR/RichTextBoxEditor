@@ -301,8 +301,11 @@ namespace RichTextBoxEditor
                 }
                 return;
             }
-            rtbEditor.Undo();
-            rtbEditor.Redo();
+            if (e.Key == Key.Space)
+            {
+                rtbEditor.Undo();
+                rtbEditor.Redo();
+            }
         }
 
         //MenuItem Vpred
