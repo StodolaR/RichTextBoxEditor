@@ -24,22 +24,40 @@ namespace RichTextBoxEditor
     {
         private string filePath;
         private bool edited;
-        private bool firstEdit;
-        private bool firstFontInitialized;
         
         public MainWindow()
         {
             InitializeComponent();
             filePath = string.Empty;
             edited = false;
-            firstEdit = true;
-            firstFontInitialized = false;
             cbFFamily.ItemsSource = Fonts.SystemFontFamilies;
             cbFSize.ItemsSource = new double[] { 8, 10, 12, 16, 20, 24, 32, 40, 48 };
+            rtbEditor.SelectAll();
             rtbEditor.Focus();
             ActualizeButtonsStates();
             List<SolidColorBrush> colors = CreatePalette();
             cbPalette.ItemsSource = colors;
+        }
+
+        //Metody pro falesny kurzor prekryvajici vybrani textu po spusteni programu, 
+        //ktere je aplikovano, aby byla umoznena zmena vlastnosti textu jeste pred zacatkem psani.
+        private void rtbEditor_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (canFalseCaret.Visibility == Visibility.Visible)
+            {
+                canFalseCaret.Visibility = Visibility.Collapsed;
+            }
+        }
+        private void mainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (canFalseCaret.Visibility == Visibility.Visible && btnACenter.IsChecked == true)
+            {
+                Canvas.SetLeft(pFalseCaret, mainWindow.ActualWidth / 2 - 17);
+            }
+            else if (canFalseCaret.Visibility == Visibility.Visible && btnARight.IsChecked == true)
+            {
+                Canvas.SetLeft(pFalseCaret, mainWindow.ActualWidth - 35);
+            }
         }
 
         // MemuItem Soubor
@@ -295,14 +313,6 @@ namespace RichTextBoxEditor
         }
         private void RtbEditor_KeyUp(object sender, KeyEventArgs e)
         {
-            if(!firstFontInitialized)
-            {
-                if(rtbEditor.Document.ContentStart.GetPositionAtOffset(5).CompareTo(rtbEditor.Document.ContentEnd) == -1)
-                {
-                    firstFontInitialized = true;
-                }
-                return;
-            }
             if (e.Key == Key.Space)
             {
                 rtbEditor.Undo();
@@ -422,40 +432,7 @@ namespace RichTextBoxEditor
 
         //Menuitem Pismo
         //Menuitem Tucne
-        private void RtbEditor_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            if (!firstEdit) return;
-            Run run = new Run(e.Text, rtbEditor.CaretPosition);
-            rtbEditor.BeginChange();
-            if (btnBold.IsChecked == true)
-            {
-                run.FontWeight = FontWeights.Bold;
-            }
-            if (btnItalic.IsChecked == true)
-            {
-                run.FontStyle = FontStyles.Italic;
-            }
-            if (btnUnderline.IsChecked == true)
-            {
-                run.TextDecorations = TextDecorations.Underline;
-            }
-            if (cbFFamily.SelectedItem != null)
-            {
-                rtbEditor.FontFamily = (FontFamily)cbFFamily.SelectedItem;
-            }
-            if (double.TryParse(cbFSize.Text, out double value))
-            {
-                rtbEditor.FontSize = value;
-            }
-            if (cbPalette.SelectedItem != null)
-            {
-                rtbEditor.Foreground = (SolidColorBrush)cbPalette.SelectedItem;
-            }
-            rtbEditor.EndChange();
-            e.Handled = true;
-            rtbEditor.CaretPosition = run.ElementEnd; 
-            firstEdit = false;
-        }
+
         private void MiBold_Click(object sender, RoutedEventArgs e)
         {
             btnBold.IsChecked = miBold.IsChecked;
@@ -512,16 +489,20 @@ namespace RichTextBoxEditor
             switch(senderDirection)
             {
                 case "Left": miALeft.IsChecked = true;
-                             btnALeft.IsChecked = true; 
+                             btnALeft.IsChecked = true;                  
+                             Canvas.SetLeft(pFalseCaret, 0);                   
                              break;
                 case "Center": miACenter.IsChecked = true;
-                               btnACenter.IsChecked = true; 
+                               btnACenter.IsChecked = true;                   
+                               Canvas.SetLeft(pFalseCaret, mainWindow.ActualWidth/2-17);                    
                                break;
                 case "Right": miARight.IsChecked = true;
                               btnARight.IsChecked = true;
+                              Canvas.SetLeft(pFalseCaret, mainWindow.ActualWidth - 35);
                               break;
                 case "Justify": miAJustify.IsChecked = true;
                                 btnAJustify.IsChecked = true;
+                                Canvas.SetLeft(pFalseCaret, 0);
                                 break;
             }            
         }
@@ -574,9 +555,9 @@ namespace RichTextBoxEditor
                 colors.Add(color);
                 color = new SolidColorBrush(Color.FromRgb(rgbColors[i].Item1, rgbColors[i].Item2, rgbColors[i].Item3));
                 colors.Add(color);
-                r = rgbColors[i].Item1 == 0 ? (byte)180 : (byte)255;
-                g = rgbColors[i].Item2 == 0 ? (byte)180 : (byte)255;
-                b = rgbColors[i].Item3 == 0 ? (byte)180 : (byte)255;
+                r = rgbColors[i].Item1 == 0 ? (byte)150 : (byte)255;
+                g = rgbColors[i].Item2 == 0 ? (byte)150 : (byte)255;
+                b = rgbColors[i].Item3 == 0 ? (byte)150 : (byte)255;
                 color = new SolidColorBrush(Color.FromRgb(r, g, b));
                 colors.Add(color);
             }
@@ -593,5 +574,7 @@ namespace RichTextBoxEditor
             rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, cbPalette.SelectedItem);
             rtbEditor.Focus();
         }
+
+       
     }
 }
