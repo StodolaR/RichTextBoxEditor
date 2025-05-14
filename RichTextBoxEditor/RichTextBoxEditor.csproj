@@ -17,7 +17,6 @@
     <None Remove="Resources\Icons\Close.png" />
     <None Remove="Resources\Icons\Copy.png" />
     <None Remove="Resources\Icons\Cut.png" />
-    <None Remove="Resources\Icons\Down.png" />
     <None Remove="Resources\Icons\Find.png" />
     <None Remove="Resources\Icons\Italic.png" />
     <None Remove="Resources\Icons\Last.png" />
@@ -59,9 +58,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\Cut.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Icons\Down.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\Find.png">

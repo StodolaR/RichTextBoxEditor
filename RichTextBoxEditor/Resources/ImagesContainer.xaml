@@ -32,7 +32,6 @@
     <Image Source="/Resources/Icons/Italic.png" x:Key="iItalic2"/>
     <Image Source="/Resources/Icons/Underline.png" x:Key="iUnderline"/>
     <Image Source="/Resources/Icons/Underline.png" x:Key="iUnderline2"/>
-    <Image Source="/Resources/Icons/Down.png" Width="8" x:Key="iDown"/>
     <Image Source="/Resources/Icons/AlignLeft.png" x:Key="iAlignLeft"/>
     <Image Source="/Resources/Icons/AlignLeft.png" x:Key="iAlignLeft2"/>
     <Image Source="/Resources/Icons/AlignCenter.png" x:Key="iAlignCenter"/>

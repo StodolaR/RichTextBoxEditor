@@ -38,6 +38,8 @@ namespace RichTextBoxEditor
             cbFSize.ItemsSource = new double[] { 8, 10, 12, 16, 20, 24, 32, 40, 48 };
             rtbEditor.Focus();
             ActualizeButtonsStates();
+            List<SolidColorBrush> colors = CreatePalette();
+            cbPalette.ItemsSource = colors;
         }
 
         // MemuItem Soubor
@@ -445,6 +447,10 @@ namespace RichTextBoxEditor
             {
                 rtbEditor.FontSize = value;
             }
+            if (cbPalette.SelectedItem != null)
+            {
+                rtbEditor.Foreground = (SolidColorBrush)cbPalette.SelectedItem;
+            }
             rtbEditor.EndChange();
             e.Handled = true;
             rtbEditor.CaretPosition = run.ElementEnd; 
@@ -552,5 +558,40 @@ namespace RichTextBoxEditor
             }
         }
 
+        //ComboBox Palette
+        private List<SolidColorBrush> CreatePalette()
+        {
+            List<(byte, byte, byte)> rgbColors = new List<(byte, byte, byte)>()
+            { (255, 255, 0), (255, 0, 0), (255, 0, 255), (0, 0, 255), (0, 255, 255), (0, 255, 0) };
+            List<SolidColorBrush> colors = new List<SolidColorBrush>
+            { new SolidColorBrush(Colors.Black), new SolidColorBrush(Colors.Gray), new SolidColorBrush (Colors.LightGray)};
+            for (int i = 0; i < rgbColors.Count; i++)
+            {
+                byte r = rgbColors[i].Item1 == 255 ? (byte)180 : (byte)0;
+                byte g = rgbColors[i].Item2 == 255 ? (byte)180 : (byte)0;
+                byte b = rgbColors[i].Item3 == 255 ? (byte)180 : (byte)0;
+                SolidColorBrush color = new SolidColorBrush(Color.FromRgb(r, g, b));
+                colors.Add(color);
+                color = new SolidColorBrush(Color.FromRgb(rgbColors[i].Item1, rgbColors[i].Item2, rgbColors[i].Item3));
+                colors.Add(color);
+                r = rgbColors[i].Item1 == 0 ? (byte)180 : (byte)255;
+                g = rgbColors[i].Item2 == 0 ? (byte)180 : (byte)255;
+                b = rgbColors[i].Item3 == 0 ? (byte)180 : (byte)255;
+                color = new SolidColorBrush(Color.FromRgb(r, g, b));
+                colors.Add(color);
+            }
+            return colors;
+        }
+        private void cbPalette_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            pColor.Fill = (SolidColorBrush)cbPalette.SelectedItem;
+            rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, cbPalette.SelectedItem);
+            rtbEditor.Focus();
+        }
+        private void btnColor_Click(object sender, RoutedEventArgs e)
+        {
+            rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, cbPalette.SelectedItem);
+            rtbEditor.Focus();
+        }
     }
 }

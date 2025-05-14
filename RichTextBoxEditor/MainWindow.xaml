@@ -114,13 +114,26 @@
             <ToggleButton x:Name="btnUnderline" ToolTip="Podtržené" Command="EditingCommands.ToggleUnderline" 
                           CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iUnderline2}" Click="BtnUnderline_Click"/>
             <Separator/>
-            <Button x:Name="btnColor" ToolTip="Barva písma">
-                <StackPanel>
-                    <Image Source="/Resources/Icons/LetterA.png" Width="13" Margin="0,0,0,1"/>
-                    <Path Data="M 0 0 H 20 V 7 H 0 Z" Fill="Black" x:Name="pColor"/>
-                </StackPanel>
-            </Button>
-            <Button x:Name="btnColors" Height="30" ToolTip="Vyber barvu" Content="{StaticResource iDown}"/>
+            <Grid>
+                <ComboBox Name="cbPalette" ToolTip="Vyber barvu" Width="44" SelectionChanged="cbPalette_SelectionChanged">
+                    <ComboBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="3" Rows="7"/>
+                        </ItemsPanelTemplate>
+                    </ComboBox.ItemsPanel>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <Rectangle Width="10" Height="10" Fill="{Binding}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button x:Name="btnColor" ToolTip="Barva písma" HorizontalAlignment="Left" Click="btnColor_Click">
+                    <StackPanel>
+                        <Image Source="/Resources/Icons/LetterA.png" Width="13" Margin="0,0,0,1"/>
+                        <Path Data="M 0 0 H 20 V 7 H 0 Z" Fill="Black" x:Name="pColor"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
             <Separator/>
             <RadioButton x:Name="btnALeft" ToolTip="Zarovnání vlevo" Command="EditingCommands.AlignLeft" 
                          CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iAlignLeft2}" Click="Align_Click"/>
