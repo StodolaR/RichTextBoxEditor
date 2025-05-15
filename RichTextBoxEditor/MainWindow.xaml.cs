@@ -84,7 +84,7 @@ namespace RichTextBoxEditor
             edited = true;
             ActualizeButtonsStates();
         }
-        private void ActualizeButtonsStates()
+        private void ActualizeButtonsStates() //TODO nacteni stavu butonu po nacteni dokumentu
         {
             object temp = rtbEditor.Selection.GetPropertyValue(Inline.FontFamilyProperty);
             if (temp == DependencyProperty.UnsetValue)
@@ -109,15 +109,20 @@ namespace RichTextBoxEditor
             temp = rtbEditor.Selection.GetPropertyValue(Inline.FontStyleProperty);
             btnItalic.IsChecked = miItalic.IsChecked = temp != DependencyProperty.UnsetValue && temp.Equals(FontStyles.Italic);
             temp = rtbEditor.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
-            btnUnderline.IsChecked = miUnderline.IsChecked = temp != DependencyProperty.UnsetValue && temp.Equals(TextDecorations.Underline);
+            btnUnderline.IsChecked = miUnderline.IsChecked = temp != DependencyProperty.UnsetValue && temp != null && temp.Equals(TextDecorations.Underline);
             if (rtbEditor.CaretPosition.Paragraph != null)
             {
                 temp = rtbEditor.CaretPosition.Paragraph.TextAlignment;
+            }
+            else
+            {
+                temp = TextAlignment.Left;
             }
             btnALeft.IsChecked = miALeft.IsChecked = temp.Equals(TextAlignment.Left);
             btnACenter.IsChecked = miACenter.IsChecked = temp.Equals(TextAlignment.Center);
             btnARight.IsChecked = miARight.IsChecked = temp.Equals(TextAlignment.Right);
             btnAJustify.IsChecked = miAJustify.IsChecked = temp.Equals(TextAlignment.Justify);
+            pColor.Fill = (SolidColorBrush)rtbEditor.Selection.GetPropertyValue(ForegroundProperty);
         }
         private void AddToLastDocs()
         {
@@ -157,6 +162,7 @@ namespace RichTextBoxEditor
             {
                 OpenFile(ofd.FileName);
             }
+            rtbEditor.CaretPosition = rtbEditor.Document.ContentStart;
         }
         private void OpenFile(string openFilePath)
         {
