@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:RichTextBoxEditor"
         mc:Ignorable="d"
         Title="Bez názvu" Width="800" Height="450" 
-        Icon="/Resources/Icons/RTBEditor.ico" x:Name="mainWindow" SizeChanged="mainWindow_SizeChanged">
+        Icon="/Resources/Icons/RTBEditor.ico" x:Name="mainWindow">
     <Window.CommandBindings>
         <CommandBinding x:Name="cbNew" Command="ApplicationCommands.New" Executed="CbNew_Executed"/>
         <CommandBinding x:Name="cbOpen" Command="ApplicationCommands.Open" Executed="CbOpen_Executed"/>
@@ -161,40 +161,13 @@
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>
-        <Grid>
-            <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="RtbEditor_SelectionChanged" 
-              KeyUp="RtbEditor_KeyUp" GotFocus="RtbEditor_GotFocus" PreviewKeyDown="rtbEditor_PreviewKeyDown" Padding="5,10">
-                <RichTextBox.Resources>
-                    <Style TargetType="Paragraph">
-                        <Setter Property="Margin" Value="0,5,0,0"/>
-                    </Style>
-                </RichTextBox.Resources>
-            </RichTextBox>
-            <Canvas Background="White" Margin="5,10" x:Name="canFalseCaret" >
-                <Canvas.Resources>
-                    <Style TargetType="Canvas">
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Cursor" Value="IBeam"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Canvas.Resources>
-                <Path Data="M 6 0 v 17" Stroke="Black" x:Name="pFalseCaret">
-                    <Path.Triggers>
-                        <EventTrigger RoutedEvent="Path.Loaded">
-                            <BeginStoryboard>
-                                <Storyboard  Storyboard.TargetProperty="StrokeThickness" Storyboard.TargetName="pFalseCaret">
-                                    <DoubleAnimationUsingKeyFrames RepeatBehavior="Forever" AutoReverse="True">
-                                        <DiscreteDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
-                                        <DiscreteDoubleKeyFrame KeyTime="0:0:0.6" Value="1"/>
-                                    </DoubleAnimationUsingKeyFrames>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Path.Triggers>
-                </Path>
-            </Canvas>
-        </Grid>
+        <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="RtbEditor_SelectionChanged" 
+                     KeyUp="RtbEditor_KeyUp" GotFocus="RtbEditor_GotFocus"  Padding="5,10" TextChanged="rtbEditor_TextChanged">
+            <RichTextBox.Resources>
+                <Style TargetType="Paragraph">
+                    <Setter Property="Margin" Value="0,5,0,0"/>
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
     </DockPanel>
 </Window>
