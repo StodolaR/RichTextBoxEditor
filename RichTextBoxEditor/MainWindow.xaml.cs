@@ -26,6 +26,7 @@ namespace RichTextBoxEditor
         private bool edited;
         private bool firstEdit;
         private bool findWordsSelected;
+        private bool changeAlignBeforeEdit;
         
         public MainWindow()
         {
@@ -34,6 +35,7 @@ namespace RichTextBoxEditor
             edited = false;
             firstEdit = true;
             findWordsSelected = false;
+            changeAlignBeforeEdit = false;
             cbFFamily.ItemsSource = Fonts.SystemFontFamilies;
             cbFSize.ItemsSource = new double[] { 8, 10, 12, 16, 20, 24, 32, 40, 48 };
             rtbEditor.Focus();
@@ -417,41 +419,44 @@ namespace RichTextBoxEditor
         //MenuItem Format
 
         //Menuitem Pismo
+        private void rtbEditor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!firstEdit || changeAlignBeforeEdit)
+            {
+                changeAlignBeforeEdit = false;
+                return;
+            }
+            rtbEditor.SelectAll();
+            if (btnBold.IsChecked == true)
+            {
+                rtbEditor.FontWeight = FontWeights.Bold;
+            }
+            if (btnItalic.IsChecked == true)
+            {
+                rtbEditor.FontStyle = FontStyles.Italic;
+            }
+            if (btnUnderline.IsChecked == true)
+            {
+                rtbEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
+            }
+            if (cbFFamily.SelectedItem != null)
+            {
+                rtbEditor.FontFamily = (FontFamily)cbFFamily.SelectedItem;
+            }
+            if (double.TryParse(cbFSize.Text, out double value))
+            {
+                rtbEditor.FontSize = value;
+            }
+            if (cbPalette.SelectedItem != null)
+            {
+                rtbEditor.Foreground = (SolidColorBrush)cbPalette.SelectedItem;
+            }
+            rtbEditor.CaretPosition = rtbEditor.Document.ContentEnd;
+            firstEdit = false;
+        }
+
         //Menuitem Tucne
-        //private void RtbEditor_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        //{
-        //    if (!firstEdit) return;
-        //    Run run = new Run(e.Text, rtbEditor.CaretPosition);
-        //    rtbEditor.BeginChange();
-        //    if (btnBold.IsChecked == true)
-        //    {
-        //        run.FontWeight = FontWeights.Bold;
-        //    }
-        //    if (btnItalic.IsChecked == true)
-        //    {
-        //        run.FontStyle = FontStyles.Italic;
-        //    }
-        //    if (btnUnderline.IsChecked == true)
-        //    {
-        //        run.TextDecorations = TextDecorations.Underline;
-        //    }
-        //    if (cbFFamily.SelectedItem != null)
-        //    {
-        //        rtbEditor.FontFamily = (FontFamily)cbFFamily.SelectedItem;
-        //    }
-        //    if (double.TryParse(cbFSize.Text, out double value))
-        //    {
-        //        rtbEditor.FontSize = value;
-        //    }
-        //    if (cbPalette.SelectedItem != null)
-        //    {
-        //        rtbEditor.Foreground = (SolidColorBrush)cbPalette.SelectedItem;
-        //    }
-        //    rtbEditor.EndChange();
-        //    e.Handled = true;
-        //    rtbEditor.CaretPosition = run.ElementEnd; 
-        //    firstEdit = false;
-        //}
+
         private void MiBold_Click(object sender, RoutedEventArgs e)
         {
             btnBold.IsChecked = miBold.IsChecked;
@@ -493,6 +498,10 @@ namespace RichTextBoxEditor
         //Menuitem Zarovnani
         private void Align_Click(object sender, RoutedEventArgs e)
         {
+            if (firstEdit)
+            {
+                changeAlignBeforeEdit = true;
+            }
             string senderDirection = string.Empty;
             UncheckAlignMenuItems();
             if (sender is MenuItem)
@@ -570,9 +579,9 @@ namespace RichTextBoxEditor
                 colors.Add(color);
                 color = new SolidColorBrush(Color.FromRgb(rgbColors[i].Item1, rgbColors[i].Item2, rgbColors[i].Item3));
                 colors.Add(color);
-                r = rgbColors[i].Item1 == 0 ? (byte)180 : (byte)255;
-                g = rgbColors[i].Item2 == 0 ? (byte)180 : (byte)255;
-                b = rgbColors[i].Item3 == 0 ? (byte)180 : (byte)255;
+                r = rgbColors[i].Item1 == 0 ? (byte)130 : (byte)255;
+                g = rgbColors[i].Item2 == 0 ? (byte)130 : (byte)255;
+                b = rgbColors[i].Item3 == 0 ? (byte)130 : (byte)255;
                 color = new SolidColorBrush(Color.FromRgb(r, g, b));
                 colors.Add(color);
             }
@@ -589,5 +598,6 @@ namespace RichTextBoxEditor
             rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, cbPalette.SelectedItem);
             rtbEditor.Focus();
         }
+        
     }
 }
