@@ -64,6 +64,21 @@ namespace RichTextBoxEditor
             firstEdit = true;
             UncheckAlignMenuItems();
             btnALeft.IsChecked = miALeft.IsChecked = true;
+            ResetNewDocumentFont();
+        }
+        private void ResetNewDocumentFont()
+        {
+            rtbEditor.SelectAll();
+            cbFFamily.SelectedIndex = 51;
+            rtbEditor.Selection.ApplyPropertyValue(FontFamilyProperty, cbFFamily.SelectedItem);
+            cbFSize.SelectedIndex = 2; 
+            rtbEditor.Selection.ApplyPropertyValue(FontSizeProperty, cbFSize.SelectedItem);
+            rtbEditor.Selection.ApplyPropertyValue(FontWeightProperty, FontWeights.Normal);
+            rtbEditor.Selection.ApplyPropertyValue(FontStyleProperty, FontStyles.Normal);
+            cbPalette.SelectedIndex = 0;
+            pColor.Fill = (SolidColorBrush)cbPalette.SelectedItem;
+            rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, cbPalette.SelectedItem);
+            ActualizeButtonsStates();
         }
         private bool CancelAskSaveDocument()
         {
