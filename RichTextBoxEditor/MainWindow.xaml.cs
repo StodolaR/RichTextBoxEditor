@@ -61,6 +61,9 @@ namespace RichTextBoxEditor
             }           
             mainWindow.Title = "Bez názvu";
             edited = false;
+            firstEdit = true;
+            UncheckAlignMenuItems();
+            btnALeft.IsChecked = miALeft.IsChecked = true;
         }
         private bool CancelAskSaveDocument()
         {
@@ -431,13 +434,25 @@ namespace RichTextBoxEditor
             {
                 rtbEditor.FontWeight = FontWeights.Bold;
             }
+            else
+            {
+                rtbEditor.FontWeight = FontWeights.Normal;
+            }
             if (btnItalic.IsChecked == true)
             {
                 rtbEditor.FontStyle = FontStyles.Italic;
             }
+            else
+            {
+                rtbEditor.FontStyle = FontStyles.Normal;
+            }
             if (btnUnderline.IsChecked == true)
             {
                 rtbEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
+            }
+            else
+            {
+                rtbEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, null);
             }
             if (cbFFamily.SelectedItem != null)
             {
