@@ -25,7 +25,7 @@ namespace RichTextBoxEditor
         private string filePath;
         private bool edited;
         private bool firstEdit;
-        private bool firstFontInitialized;
+        private bool findWordsSelected;
         
         public MainWindow()
         {
@@ -33,7 +33,7 @@ namespace RichTextBoxEditor
             filePath = string.Empty;
             edited = false;
             firstEdit = true;
-            firstFontInitialized = false;
+            findWordsSelected = false;
             cbFFamily.ItemsSource = Fonts.SystemFontFamilies;
             cbFSize.ItemsSource = new double[] { 8, 10, 12, 16, 20, 24, 32, 40, 48 };
             rtbEditor.Focus();
@@ -295,14 +295,6 @@ namespace RichTextBoxEditor
         }
         private void RtbEditor_KeyUp(object sender, KeyEventArgs e)
         {
-            if(!firstFontInitialized)
-            {
-                if(rtbEditor.Document.ContentStart.GetPositionAtOffset(5).CompareTo(rtbEditor.Document.ContentEnd) == -1)
-                {
-                    firstFontInitialized = true;
-                }
-                return;
-            }
             if (e.Key == Key.Space)
             {
                 rtbEditor.Undo();
@@ -366,6 +358,7 @@ namespace RichTextBoxEditor
                                 matchRange.Text = tbxReplace.Text;
                             }                          
                             matchRange.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.Yellow));
+                            findWordsSelected = true;
                         }
                     } while (matchBeginOffset >= 0 && replace);
                 }
@@ -388,8 +381,11 @@ namespace RichTextBoxEditor
         }
         private void RtbEditor_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
+            if (findWordsSelected)
+            {
+                TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+                allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
+            }
         }
 
         //MenuItem Nahradit
@@ -422,40 +418,40 @@ namespace RichTextBoxEditor
 
         //Menuitem Pismo
         //Menuitem Tucne
-        private void RtbEditor_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            if (!firstEdit) return;
-            Run run = new Run(e.Text, rtbEditor.CaretPosition);
-            rtbEditor.BeginChange();
-            if (btnBold.IsChecked == true)
-            {
-                run.FontWeight = FontWeights.Bold;
-            }
-            if (btnItalic.IsChecked == true)
-            {
-                run.FontStyle = FontStyles.Italic;
-            }
-            if (btnUnderline.IsChecked == true)
-            {
-                run.TextDecorations = TextDecorations.Underline;
-            }
-            if (cbFFamily.SelectedItem != null)
-            {
-                rtbEditor.FontFamily = (FontFamily)cbFFamily.SelectedItem;
-            }
-            if (double.TryParse(cbFSize.Text, out double value))
-            {
-                rtbEditor.FontSize = value;
-            }
-            if (cbPalette.SelectedItem != null)
-            {
-                rtbEditor.Foreground = (SolidColorBrush)cbPalette.SelectedItem;
-            }
-            rtbEditor.EndChange();
-            e.Handled = true;
-            rtbEditor.CaretPosition = run.ElementEnd; 
-            firstEdit = false;
-        }
+        //private void RtbEditor_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        //{
+        //    if (!firstEdit) return;
+        //    Run run = new Run(e.Text, rtbEditor.CaretPosition);
+        //    rtbEditor.BeginChange();
+        //    if (btnBold.IsChecked == true)
+        //    {
+        //        run.FontWeight = FontWeights.Bold;
+        //    }
+        //    if (btnItalic.IsChecked == true)
+        //    {
+        //        run.FontStyle = FontStyles.Italic;
+        //    }
+        //    if (btnUnderline.IsChecked == true)
+        //    {
+        //        run.TextDecorations = TextDecorations.Underline;
+        //    }
+        //    if (cbFFamily.SelectedItem != null)
+        //    {
+        //        rtbEditor.FontFamily = (FontFamily)cbFFamily.SelectedItem;
+        //    }
+        //    if (double.TryParse(cbFSize.Text, out double value))
+        //    {
+        //        rtbEditor.FontSize = value;
+        //    }
+        //    if (cbPalette.SelectedItem != null)
+        //    {
+        //        rtbEditor.Foreground = (SolidColorBrush)cbPalette.SelectedItem;
+        //    }
+        //    rtbEditor.EndChange();
+        //    e.Handled = true;
+        //    rtbEditor.CaretPosition = run.ElementEnd; 
+        //    firstEdit = false;
+        //}
         private void MiBold_Click(object sender, RoutedEventArgs e)
         {
             btnBold.IsChecked = miBold.IsChecked;
