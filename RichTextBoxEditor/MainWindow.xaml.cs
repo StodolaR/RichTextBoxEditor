@@ -82,6 +82,11 @@ namespace RichTextBoxEditor
         private void RtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
         {
             ActualizeButtonsStates();
+            TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+            tbChars.Text = (allText.Text.Length - rtbEditor.Document.Blocks.Count *2).ToString();
+            Regex regex = new Regex(@"\b[a-zA-Z0-9]*\b");
+            tbWords.Text = (regex.Matches(allText.Text).Count/2).ToString();
+            tbParagraphs.Text = rtbEditor.Document.Blocks.Count.ToString();
         }
         private void ActualizeButtonsStates() 
         {
@@ -453,10 +458,6 @@ namespace RichTextBoxEditor
             if (btnUnderline.IsChecked == true)
             {
                 rtbEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
-            }
-            else
-            {
-                rtbEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, null);
             }
             if (cbFFamily.SelectedItem != null)
             {

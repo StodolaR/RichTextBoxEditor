@@ -146,7 +146,14 @@
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom" Height="25">
             <StatusBarItem>
-                <TextBlock x:Name="tbCursorPosition" Text="0/0"/>
+                <StackPanel Orientation="Horizontal" Width="250">
+                    <TextBlock Text="Znaků: "/>
+                    <TextBlock x:Name="tbChars"/>
+                    <TextBlock Text="  Slov: "/>
+                    <TextBlock x:Name="tbWords"/>
+                    <TextBlock Text="  Odstavců: "/>
+                    <TextBlock x:Name="tbParagraphs"/>
+                </StackPanel>
             </StatusBarItem>
             <StatusBarItem>
                 <StackPanel Orientation="Horizontal" Visibility="Collapsed" Name="spFindAndReplace">
