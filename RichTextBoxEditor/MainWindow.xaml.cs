@@ -83,7 +83,7 @@ namespace RichTextBoxEditor
         {
             ActualizeButtonsStates();
         }
-        private void ActualizeButtonsStates() //TODO nacteni stavu butonu po nacteni dokumentu
+        private void ActualizeButtonsStates() 
         {
             object temp = rtbEditor.Selection.GetPropertyValue(Inline.FontFamilyProperty);
             if (temp == DependencyProperty.UnsetValue)
@@ -120,8 +120,6 @@ namespace RichTextBoxEditor
                 btnARight.IsChecked = miARight.IsChecked = temp.Equals(TextAlignment.Right);
                 btnAJustify.IsChecked = miAJustify.IsChecked = temp.Equals(TextAlignment.Justify);
             }
-            
-            pColor.Fill = (SolidColorBrush)rtbEditor.Selection.GetPropertyValue(ForegroundProperty);
         }
         private void AddToLastDocs()
         {
