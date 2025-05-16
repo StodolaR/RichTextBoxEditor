@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RichTextBoxEditor"
         mc:Ignorable="d"
-        Title="Bez názvu" Width="800" Height="450" 
+        Title="Bez názvu" Width="900" Height="600" 
         Icon="/Resources/Icons/RTBEditor.ico" x:Name="mainWindow">
     <Window.CommandBindings>
         <CommandBinding x:Name="cbNew" Command="ApplicationCommands.New" Executed="CbNew_Executed"/>
