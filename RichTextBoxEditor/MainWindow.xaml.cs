@@ -27,7 +27,6 @@ namespace RichTextBoxEditor
         private bool firstEdit;
         private bool findWordsSelected;
         private bool changeAlignBeforeEdit;
-        
         public MainWindow()
         {
             InitializeComponent();
@@ -329,6 +328,11 @@ namespace RichTextBoxEditor
                 rtbEditor.Undo();
                 rtbEditor.Redo();
             }
+            else if (e.Key == Key.Enter)
+            {
+                firstEdit = true;
+                changeAlignBeforeEdit = false;
+            }
         }
 
         //MenuItem Vpred
@@ -453,22 +457,31 @@ namespace RichTextBoxEditor
                 changeAlignBeforeEdit = false;
                 return;
             }
-            rtbEditor.SelectAll();
+            if (rtbEditor.CaretPosition.Paragraph != null)
+            {
+                rtbEditor.Selection.Select(rtbEditor.CaretPosition.Paragraph.ContentStart, rtbEditor.CaretPosition.Paragraph.ContentEnd);
+            }
+            ActualizeFontByButtons();
+            rtbEditor.CaretPosition = rtbEditor.Document.ContentEnd;
+            firstEdit = false;
+        }
+        private void ActualizeFontByButtons()
+        {
             if (btnBold.IsChecked == true)
             {
-                rtbEditor.FontWeight = FontWeights.Bold;
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontWeightProperty, FontWeights.Bold);
             }
             else
             {
-                rtbEditor.FontWeight = FontWeights.Normal;
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontWeightProperty, FontWeights.Normal);
             }
             if (btnItalic.IsChecked == true)
             {
-                rtbEditor.FontStyle = FontStyles.Italic;
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontStyleProperty, FontStyles.Italic);
             }
             else
             {
-                rtbEditor.FontStyle = FontStyles.Normal;
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontStyleProperty, FontStyles.Normal);
             }
             if (btnUnderline.IsChecked == true)
             {
@@ -476,18 +489,16 @@ namespace RichTextBoxEditor
             }
             if (cbFFamily.SelectedItem != null)
             {
-                rtbEditor.FontFamily = (FontFamily)cbFFamily.SelectedItem;
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, cbFFamily.SelectedItem);
             }
             if (double.TryParse(cbFSize.Text, out double value))
             {
-                rtbEditor.FontSize = value;
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, value);
             }
             if (cbPalette.SelectedItem != null)
             {
-                rtbEditor.Foreground = (SolidColorBrush)cbPalette.SelectedItem;
+                rtbEditor.Selection.ApplyPropertyValue(Inline.ForegroundProperty, cbPalette.SelectedItem);
             }
-            rtbEditor.CaretPosition = rtbEditor.Document.ContentEnd;
-            firstEdit = false;
         }
 
         //Menuitem Tucne
@@ -555,7 +566,7 @@ namespace RichTextBoxEditor
                              btnALeft.IsChecked = true; 
                              break;
                 case "Center": miACenter.IsChecked = true;
-                               btnACenter.IsChecked = true; 
+                               btnACenter.IsChecked = true;
                                break;
                 case "Right": miARight.IsChecked = true;
                               btnARight.IsChecked = true;
