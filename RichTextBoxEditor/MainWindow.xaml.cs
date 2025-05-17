@@ -28,6 +28,8 @@ namespace RichTextBoxEditor
         private bool findWordsSelected;
         private bool changeAlignBeforeEdit;
         private bool editing;
+        private bool loadDoc;
+        private SolidColorBrush actualColor;
         public MainWindow()
         {
             InitializeComponent();
@@ -37,14 +39,17 @@ namespace RichTextBoxEditor
             findWordsSelected = false;
             changeAlignBeforeEdit = false;
             editing = false;
+            loadDoc = false;
             cbFFamily.ItemsSource = Fonts.SystemFontFamilies;
             cbFSize.ItemsSource = new double[] { 8, 10, 12, 16, 20, 24, 32, 40, 48 };
             rtbEditor.Focus();
             ActualizeButtonsStates();
             List<SolidColorBrush> colors = CreatePalette();
             cbPalette.ItemsSource = colors;
+            cbPalette.SelectedIndex = 0;
+            actualColor = (SolidColorBrush)cbPalette.SelectedItem;
         }
-
+       
         private void rtbEditor_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (changeAlignBeforeEdit)
@@ -65,6 +70,7 @@ namespace RichTextBoxEditor
             rtbEditor.CaretPosition = rtbEditor.Document.ContentEnd;
             firstEdit = false;
         }
+        
         private void ActualizeFontByButtons()
         {
             if (btnBold.IsChecked == true)
@@ -87,6 +93,11 @@ namespace RichTextBoxEditor
             {
                 rtbEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
             }
+            else
+            {
+                TextDecorationCollection noUnder = new TextDecorationCollection();
+                rtbEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, noUnder);
+            }
             if (cbFFamily.SelectedItem != null)
             {
                 rtbEditor.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, cbFFamily.SelectedItem);
@@ -95,31 +106,36 @@ namespace RichTextBoxEditor
             {
                 rtbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, value);
             }
-            if (cbPalette.SelectedItem != null)
-            {
-                rtbEditor.Selection.ApplyPropertyValue(Inline.ForegroundProperty, cbPalette.SelectedItem);
-            }
+            rtbEditor.Selection.ApplyPropertyValue(Inline.ForegroundProperty, actualColor);
         }
         private void RtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            ActualizeButtonsStates();
-            TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            tbChars.Text = (allText.Text.Length - rtbEditor.Document.Blocks.Count *2).ToString();
-            Regex regex = new Regex(@"\b[a-zA-Z0-9]*\b");
-            tbWords.Text = (regex.Matches(allText.Text).Count/2).ToString();
-            tbParagraphs.Text = rtbEditor.Document.Blocks.Count.ToString();
-        }
-        private void ActualizeButtonsStates() 
-        {
+            GetStatus();
             if (editing)
             {
                 editing = false;
                 return;
             }
-            if(rtbEditor.CaretPosition.GetTextInRun(LogicalDirection.Forward).Length == 0)
+            if (rtbEditor.CaretPosition.GetTextInRun(LogicalDirection.Forward).Length == 0 && loadDoc == false)
             {
                 ActualizeFontByButtons();
             }
+            else
+            {
+                ActualizeButtonsStates();
+                loadDoc = false;
+            }
+        }
+        private void GetStatus()
+        {
+            TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+            tbChars.Text = (allText.Text.Length - rtbEditor.Document.Blocks.Count * 2).ToString();
+            Regex regex = new Regex(@"\b[a-zA-Z0-9]*\b");
+            tbWords.Text = (regex.Matches(allText.Text).Count / 2).ToString();
+            tbParagraphs.Text = rtbEditor.Document.Blocks.Count.ToString();
+        }
+        private void ActualizeButtonsStates() 
+        {
             object temp = rtbEditor.Selection.GetPropertyValue(Inline.FontFamilyProperty);
             if (temp == DependencyProperty.UnsetValue)
             {
@@ -143,9 +159,18 @@ namespace RichTextBoxEditor
             temp = rtbEditor.Selection.GetPropertyValue(Inline.FontStyleProperty);
             btnItalic.IsChecked = miItalic.IsChecked = temp != DependencyProperty.UnsetValue && temp.Equals(FontStyles.Italic);
             temp = rtbEditor.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
-            if (temp != null)
+            if (temp != null && temp != DependencyProperty.UnsetValue)
             {
-                btnUnderline.IsChecked = miUnderline.IsChecked = temp != DependencyProperty.UnsetValue && (temp.Equals(TextDecorations.Underline) || ((TextDecorationCollection)temp).Count > 0);
+                btnUnderline.IsChecked = miUnderline.IsChecked = ((TextDecorationCollection)temp).Contains(TextDecorations.Underline[0]);
+            }
+            else
+            {
+                btnUnderline.IsChecked = miUnderline.IsChecked = false;
+            }
+            temp = rtbEditor.Selection.GetPropertyValue(Inline.ForegroundProperty);
+            if (temp != DependencyProperty.UnsetValue)
+            {
+                actualColor = (SolidColorBrush)temp;
             }
             if (rtbEditor.CaretPosition.Paragraph != null)
             {
@@ -174,9 +199,13 @@ namespace RichTextBoxEditor
         {
             if (findWordsSelected)
             {
-                TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-                allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
+                ClearFindSelection();
             }
+        }
+        private void ClearFindSelection()
+        {
+            TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+            allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
         }
 
         // MemuItem Soubor
@@ -206,9 +235,14 @@ namespace RichTextBoxEditor
             rtbEditor.SelectAll();
             cbFFamily.SelectedIndex = 51;
             cbFSize.SelectedIndex = 2;
+            rtbEditor.Selection.ApplyPropertyValue(FontSizeProperty, cbFSize.SelectedItem);
             rtbEditor.Selection.ApplyPropertyValue(FontWeightProperty, FontWeights.Normal);
             rtbEditor.Selection.ApplyPropertyValue(FontStyleProperty, FontStyles.Normal);
+            TextDecorationCollection noUnder = new TextDecorationCollection();
+            rtbEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, noUnder);
             cbPalette.SelectedIndex = 0;
+            actualColor = (SolidColorBrush)cbPalette.SelectedItem;
+            rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, actualColor);
             ActualizeButtonsStates();
         }
         private bool CancelAskSaveDocument()
@@ -279,8 +313,21 @@ namespace RichTextBoxEditor
                     filePath = openFilePath;
                     mainWindow.Title = System.IO.Path.GetFileName(openFilePath);
                     edited = false;
-                    rtbEditor.CaretPosition = rtbEditor.Document.ContentEnd;
-                }
+                    if (rtbEditor.Document.ContentStart.GetPositionAtOffset(4) != null)
+                    {
+                        editing = false;
+                        loadDoc = true;
+                        rtbEditor.Selection.Select(rtbEditor.Document.ContentStart.GetPositionAtOffset(3), rtbEditor.Document.ContentStart.GetPositionAtOffset(4));
+                        editing = true;
+                        rtbEditor.CaretPosition = rtbEditor.Document.ContentStart.GetPositionAtOffset(3);
+                        ActualizeFontByButtons();
+                    }
+                    else
+                    {
+                        ResetNewDocumentFont();
+                        rtbEditor.CaretPosition = rtbEditor.Document.ContentStart;
+                    }
+                }                   
             }
             catch (Exception ex)
             {
@@ -496,6 +543,7 @@ namespace RichTextBoxEditor
         private void BtnStartReplace_Click(object sender, RoutedEventArgs e)
         {
             FindOrReplacePattern(true);
+            GetStatus();
         }
         //Najit a nahradit - Oznaceni textu v textboxech pri ziskani focusu
         private void TextBox_LostMouseCapture(object sender, MouseEventArgs e)
@@ -648,13 +696,14 @@ namespace RichTextBoxEditor
         }
         private void cbPalette_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            pColor.Fill = (SolidColorBrush)cbPalette.SelectedItem;
-            rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, cbPalette.SelectedItem);
+            actualColor = (SolidColorBrush)cbPalette.SelectedItem;
+            rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, actualColor);
+            pColor.Fill = actualColor;
             rtbEditor.Focus();
         }
         private void btnColor_Click(object sender, RoutedEventArgs e)
         {
-            rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, cbPalette.SelectedItem);
+            rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, pColor.Fill);
             rtbEditor.Focus();
         }
         
