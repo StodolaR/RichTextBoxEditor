@@ -27,6 +27,7 @@ namespace RichTextBoxEditor
         private bool firstEdit;
         private bool findWordsSelected;
         private bool changeAlignBeforeEdit;
+        private bool editing;
         public MainWindow()
         {
             InitializeComponent();
@@ -35,6 +36,7 @@ namespace RichTextBoxEditor
             firstEdit = true;
             findWordsSelected = false;
             changeAlignBeforeEdit = false;
+            editing = false;
             cbFFamily.ItemsSource = Fonts.SystemFontFamilies;
             cbFSize.ItemsSource = new double[] { 8, 10, 12, 16, 20, 24, 32, 40, 48 };
             rtbEditor.Focus();
@@ -45,9 +47,14 @@ namespace RichTextBoxEditor
 
         private void rtbEditor_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!firstEdit || changeAlignBeforeEdit)
+            if (changeAlignBeforeEdit)
             {
                 changeAlignBeforeEdit = false;
+                return;
+            }
+            if (!firstEdit)
+            {
+                editing = true;
                 return;
             }
             if (rtbEditor.CaretPosition.Paragraph != null)
@@ -104,6 +111,12 @@ namespace RichTextBoxEditor
         }
         private void ActualizeButtonsStates() 
         {
+            if (editing)
+            {
+                editing = false;
+                return;
+            }
+            
             object temp = rtbEditor.Selection.GetPropertyValue(Inline.FontFamilyProperty);
             if (temp == DependencyProperty.UnsetValue)
             {
