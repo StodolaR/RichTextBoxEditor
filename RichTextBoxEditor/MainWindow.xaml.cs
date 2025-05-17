@@ -116,7 +116,10 @@ namespace RichTextBoxEditor
                 editing = false;
                 return;
             }
-            
+            if(rtbEditor.CaretPosition.GetTextInRun(LogicalDirection.Forward).Length == 0)
+            {
+                ActualizeFontByButtons();
+            }
             object temp = rtbEditor.Selection.GetPropertyValue(Inline.FontFamilyProperty);
             if (temp == DependencyProperty.UnsetValue)
             {
