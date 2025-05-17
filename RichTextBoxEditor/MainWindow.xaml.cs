@@ -43,55 +43,55 @@ namespace RichTextBoxEditor
             cbPalette.ItemsSource = colors;
         }
 
-        // MemuItem Soubor
-
-        // MenuItem Novy
-        private void CbNew_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void rtbEditor_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (CancelAskSaveDocument())
+            if (!firstEdit || changeAlignBeforeEdit)
             {
+                changeAlignBeforeEdit = false;
                 return;
             }
-            rtbEditor.Document.Blocks.Clear();
-            if(filePath != string.Empty)
+            if (rtbEditor.CaretPosition.Paragraph != null)
             {
-                AddToLastDocs();
-                filePath = string.Empty;
-            }           
-            mainWindow.Title = "Bez názvu";
-            edited = false;
-            firstEdit = true;
-            UncheckAlignMenuItems();
-            btnALeft.IsChecked = miALeft.IsChecked = true;
-            ResetNewDocumentFont();
-        }
-        private void ResetNewDocumentFont()
-        {
-            rtbEditor.SelectAll();
-            cbFFamily.SelectedIndex = 51;
-            rtbEditor.Selection.ApplyPropertyValue(FontFamilyProperty, cbFFamily.SelectedItem);
-            cbFSize.SelectedIndex = 2; 
-            rtbEditor.Selection.ApplyPropertyValue(FontSizeProperty, cbFSize.SelectedItem);
-            rtbEditor.Selection.ApplyPropertyValue(FontWeightProperty, FontWeights.Normal);
-            rtbEditor.Selection.ApplyPropertyValue(FontStyleProperty, FontStyles.Normal);
-            cbPalette.SelectedIndex = 0;
-            pColor.Fill = (SolidColorBrush)cbPalette.SelectedItem;
-            rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, cbPalette.SelectedItem);
-            ActualizeButtonsStates();
-        }
-        private bool CancelAskSaveDocument()
-        {
-            if (edited)
-            {
-                MessageBoxResult result = MessageBox.Show("Přejete si uložit stávající dokument?", "Uložení dokumentu",
-                                                            MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    Save();
-                }
-                return result == MessageBoxResult.Cancel;
+                rtbEditor.Selection.Select(rtbEditor.CaretPosition.Paragraph.ContentStart, rtbEditor.CaretPosition.Paragraph.ContentEnd);
             }
-            return false;
+            ActualizeFontByButtons();
+            rtbEditor.CaretPosition = rtbEditor.Document.ContentEnd;
+            firstEdit = false;
+        }
+        private void ActualizeFontByButtons()
+        {
+            if (btnBold.IsChecked == true)
+            {
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontWeightProperty, FontWeights.Bold);
+            }
+            else
+            {
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontWeightProperty, FontWeights.Normal);
+            }
+            if (btnItalic.IsChecked == true)
+            {
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontStyleProperty, FontStyles.Italic);
+            }
+            else
+            {
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontStyleProperty, FontStyles.Normal);
+            }
+            if (btnUnderline.IsChecked == true)
+            {
+                rtbEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
+            }
+            if (cbFFamily.SelectedItem != null)
+            {
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, cbFFamily.SelectedItem);
+            }
+            if (double.TryParse(cbFSize.Text, out double value))
+            {
+                rtbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, value);
+            }
+            if (cbPalette.SelectedItem != null)
+            {
+                rtbEditor.Selection.ApplyPropertyValue(Inline.ForegroundProperty, cbPalette.SelectedItem);
+            }
         }
         private void RtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
         {
@@ -139,6 +139,75 @@ namespace RichTextBoxEditor
                 btnARight.IsChecked = miARight.IsChecked = temp.Equals(TextAlignment.Right);
                 btnAJustify.IsChecked = miAJustify.IsChecked = temp.Equals(TextAlignment.Justify);
             }
+        }
+        private void RtbEditor_KeyUp(object sender, KeyEventArgs e)
+        {
+            edited = true;
+            if (e.Key == Key.Space)
+            {
+                rtbEditor.Undo();
+                rtbEditor.Redo();
+            }
+            else if (e.Key == Key.Enter)
+            {
+                firstEdit = true;
+                changeAlignBeforeEdit = false;
+            }
+        }
+        private void RtbEditor_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (findWordsSelected)
+            {
+                TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+                allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
+            }
+        }
+
+        // MemuItem Soubor
+
+        // MenuItem Novy
+        private void CbNew_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (CancelAskSaveDocument())
+            {
+                return;
+            }
+            rtbEditor.Document.Blocks.Clear();
+            if (filePath != string.Empty)
+            {
+                AddToLastDocs();
+                filePath = string.Empty;
+            }
+            mainWindow.Title = "Bez názvu";
+            edited = false;
+            firstEdit = true;
+            UncheckAlignMenuItems();
+            btnALeft.IsChecked = miALeft.IsChecked = true;
+            ResetNewDocumentFont();
+        }
+        private void ResetNewDocumentFont()
+        {
+            rtbEditor.SelectAll();
+            cbFFamily.SelectedIndex = 51;
+            cbFSize.SelectedIndex = 2;
+            rtbEditor.Selection.ApplyPropertyValue(FontWeightProperty, FontWeights.Normal);
+            rtbEditor.Selection.ApplyPropertyValue(FontStyleProperty, FontStyles.Normal);
+            cbPalette.SelectedIndex = 0;
+            ActualizeButtonsStates();
+        }
+        private bool CancelAskSaveDocument()
+        {
+            if (edited)
+            {
+                MessageBoxResult result = MessageBox.Show("Přejete si uložit stávající dokument?", "Uložení dokumentu",
+                                                            MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    Save();
+                }
+                return result == MessageBoxResult.Cancel;
+            }
+            return false;
         }
         private void AddToLastDocs()
         {
@@ -194,7 +263,7 @@ namespace RichTextBoxEditor
                     filePath = openFilePath;
                     mainWindow.Title = System.IO.Path.GetFileName(openFilePath);
                     edited = false;
-                    rtbEditor.CaretPosition = rtbEditor.Document.ContentStart;
+                    rtbEditor.CaretPosition = rtbEditor.Document.ContentEnd;
                 }
             }
             catch (Exception ex)
@@ -320,20 +389,6 @@ namespace RichTextBoxEditor
         {
             rtbEditor.Undo();
         }
-        private void RtbEditor_KeyUp(object sender, KeyEventArgs e)
-        {
-            edited = true;
-            if (e.Key == Key.Space)
-            {
-                rtbEditor.Undo();
-                rtbEditor.Redo();
-            }
-            else if (e.Key == Key.Enter)
-            {
-                firstEdit = true;
-                changeAlignBeforeEdit = false;
-            }
-        }
 
         //MenuItem Vpred
         private void CbRedo_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -412,14 +467,6 @@ namespace RichTextBoxEditor
             tbxReplace.Text = string.Empty;
             tbStatus.Text = string.Empty;
         }
-        private void RtbEditor_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (findWordsSelected)
-            {
-                TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-                allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
-            }
-        }
 
         //MenuItem Nahradit
         private void CbReplace_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -450,56 +497,6 @@ namespace RichTextBoxEditor
         //MenuItem Format
 
         //Menuitem Pismo
-        private void rtbEditor_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!firstEdit || changeAlignBeforeEdit)
-            {
-                changeAlignBeforeEdit = false;
-                return;
-            }
-            if (rtbEditor.CaretPosition.Paragraph != null)
-            {
-                rtbEditor.Selection.Select(rtbEditor.CaretPosition.Paragraph.ContentStart, rtbEditor.CaretPosition.Paragraph.ContentEnd);
-            }
-            ActualizeFontByButtons();
-            rtbEditor.CaretPosition = rtbEditor.Document.ContentEnd;
-            firstEdit = false;
-        }
-        private void ActualizeFontByButtons()
-        {
-            if (btnBold.IsChecked == true)
-            {
-                rtbEditor.Selection.ApplyPropertyValue(Inline.FontWeightProperty, FontWeights.Bold);
-            }
-            else
-            {
-                rtbEditor.Selection.ApplyPropertyValue(Inline.FontWeightProperty, FontWeights.Normal);
-            }
-            if (btnItalic.IsChecked == true)
-            {
-                rtbEditor.Selection.ApplyPropertyValue(Inline.FontStyleProperty, FontStyles.Italic);
-            }
-            else
-            {
-                rtbEditor.Selection.ApplyPropertyValue(Inline.FontStyleProperty, FontStyles.Normal);
-            }
-            if (btnUnderline.IsChecked == true)
-            {
-                rtbEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
-            }
-            if (cbFFamily.SelectedItem != null)
-            {
-                rtbEditor.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, cbFFamily.SelectedItem);
-            }
-            if (double.TryParse(cbFSize.Text, out double value))
-            {
-                rtbEditor.Selection.ApplyPropertyValue(Inline.FontSizeProperty, value);
-            }
-            if (cbPalette.SelectedItem != null)
-            {
-                rtbEditor.Selection.ApplyPropertyValue(Inline.ForegroundProperty, cbPalette.SelectedItem);
-            }
-        }
 
         //Menuitem Tucne
 
