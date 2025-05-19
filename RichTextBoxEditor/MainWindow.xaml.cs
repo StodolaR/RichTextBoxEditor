@@ -25,29 +25,23 @@ namespace RichTextBoxEditor
         private string filePath;
         private bool edited;
         private bool firstEdit;
-        private bool findWordsSelected;
         private bool changeAlignBeforeEdit;
-        private bool editing;
-        private bool loadDoc;
+        private bool actualizeFontBool;
+        private bool actualizeButtonsBool;
         private SolidColorBrush actualColor;
         public MainWindow()
         {
             InitializeComponent();
             filePath = string.Empty;
-            edited = false;
             firstEdit = true;
-            findWordsSelected = false;
-            changeAlignBeforeEdit = false;
-            editing = false;
-            loadDoc = false;
             cbFFamily.ItemsSource = Fonts.SystemFontFamilies;
             cbFSize.ItemsSource = new double[] { 8, 10, 12, 16, 20, 24, 32, 40, 48 };
-            rtbEditor.Focus();
-            ActualizeButtonsStates();
+            ActualizeButtonsByFont();
             List<SolidColorBrush> colors = CreatePalette();
             cbPalette.ItemsSource = colors;
             cbPalette.SelectedIndex = 0;
             actualColor = (SolidColorBrush)cbPalette.SelectedItem;
+            rtbEditor.Focus();
         }
        
         private void rtbEditor_TextChanged(object sender, TextChangedEventArgs e)
@@ -59,15 +53,18 @@ namespace RichTextBoxEditor
             }
             if (!firstEdit)
             {
-                editing = true;
                 return;
             }
-            if (rtbEditor.CaretPosition.Paragraph != null)
+            if (rtbEditor.CaretPosition.Paragraph != null
+                && rtbEditor.CaretPosition.Paragraph.Inlines.Count == 1 
+                && rtbEditor.CaretPosition.Paragraph.Inlines.First() is Run
+                && ((Run)rtbEditor.CaretPosition.Paragraph.Inlines.First()).Text.Length == 1)
             {
                 rtbEditor.Selection.Select(rtbEditor.CaretPosition.Paragraph.ContentStart, rtbEditor.CaretPosition.Paragraph.ContentEnd);
+                ActualizeFontByButtons();
+                rtbEditor.CaretPosition = rtbEditor.CaretPosition.Paragraph.ContentEnd;
             }
-            ActualizeFontByButtons();
-            rtbEditor.CaretPosition = rtbEditor.Document.ContentEnd;
+            
             firstEdit = false;
         }
         
@@ -111,20 +108,15 @@ namespace RichTextBoxEditor
         private void RtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
         {
             GetStatus();
-            if (editing)
+            if (actualizeButtonsBool)
             {
-                editing = false;
-                return;
+                ActualizeButtonsByFont();
             }
-            if (rtbEditor.CaretPosition.GetTextInRun(LogicalDirection.Forward).Length == 0 && loadDoc == false)
+            if (actualizeFontBool)
             {
                 ActualizeFontByButtons();
             }
-            else
-            {
-                ActualizeButtonsStates();
-                loadDoc = false;
-            }
+            actualizeButtonsBool = actualizeFontBool = false;
         }
         private void GetStatus()
         {
@@ -134,7 +126,7 @@ namespace RichTextBoxEditor
             tbWords.Text = (regex.Matches(allText.Text).Count / 2).ToString();
             tbParagraphs.Text = rtbEditor.Document.Blocks.Count.ToString();
         }
-        private void ActualizeButtonsStates() 
+        private void ActualizeButtonsByFont() 
         {
             object temp = rtbEditor.Selection.GetPropertyValue(Inline.FontFamilyProperty);
             if (temp == DependencyProperty.UnsetValue)
@@ -189,23 +181,22 @@ namespace RichTextBoxEditor
                 rtbEditor.Undo();
                 rtbEditor.Redo();
             }
-            else if (e.Key == Key.Enter)
+            if (e.Key.Equals(Key.Enter))
             {
                 firstEdit = true;
                 changeAlignBeforeEdit = false;
             }
+            ActualizeButtonsByFont();
+
         }
-        private void RtbEditor_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (findWordsSelected)
-            {
-                ClearFindSelection();
-            }
-        }
-        private void ClearFindSelection()
+        private void rtbEditor_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
+            if (allText.GetPropertyValue(TextElement.BackgroundProperty) == DependencyProperty.UnsetValue)
+            {
+                allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
+            }
+            actualizeButtonsBool = true;
         }
 
         // MemuItem Soubor
@@ -229,11 +220,14 @@ namespace RichTextBoxEditor
             UncheckAlignMenuItems();
             btnALeft.IsChecked = miALeft.IsChecked = true;
             ResetNewDocumentFont();
+            rtbEditor.IsUndoEnabled = false;
+            rtbEditor.IsUndoEnabled = true;
         }
         private void ResetNewDocumentFont()
         {
             rtbEditor.SelectAll();
             cbFFamily.SelectedIndex = 51;
+            rtbEditor.Selection.ApplyPropertyValue(FontFamilyProperty, cbFFamily.SelectedItem);
             cbFSize.SelectedIndex = 2;
             rtbEditor.Selection.ApplyPropertyValue(FontSizeProperty, cbFSize.SelectedItem);
             rtbEditor.Selection.ApplyPropertyValue(FontWeightProperty, FontWeights.Normal);
@@ -243,7 +237,8 @@ namespace RichTextBoxEditor
             cbPalette.SelectedIndex = 0;
             actualColor = (SolidColorBrush)cbPalette.SelectedItem;
             rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, actualColor);
-            ActualizeButtonsStates();
+            pColor.Fill = actualColor;
+            ActualizeButtonsByFont();
         }
         private bool CancelAskSaveDocument()
         {
@@ -297,6 +292,8 @@ namespace RichTextBoxEditor
             {
                 OpenFile(ofd.FileName);
             }
+            rtbEditor.IsUndoEnabled = false;
+            rtbEditor.IsUndoEnabled = true;
         }
         private void OpenFile(string openFilePath)
         {
@@ -315,10 +312,8 @@ namespace RichTextBoxEditor
                     edited = false;
                     if (rtbEditor.Document.ContentStart.GetPositionAtOffset(4) != null)
                     {
-                        editing = false;
-                        loadDoc = true;
+                        actualizeButtonsBool = true;
                         rtbEditor.Selection.Select(rtbEditor.Document.ContentStart.GetPositionAtOffset(3), rtbEditor.Document.ContentStart.GetPositionAtOffset(4));
-                        editing = true;
                         rtbEditor.CaretPosition = rtbEditor.Document.ContentStart.GetPositionAtOffset(3);
                         ActualizeFontByButtons();
                     }
@@ -482,36 +477,38 @@ namespace RichTextBoxEditor
         }
         private void FindOrReplacePattern(bool replace)
         {
-            TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
-            if (string.IsNullOrWhiteSpace(allText.Text) || string.IsNullOrWhiteSpace(tbxFind.Text))
+            using (rtbEditor.DeclareChangeBlock())
             {
-                tbStatus.Text = "Zadna shoda";
-            }
-            else
-            {
-                tbStatus.Text = $"  Pocet shod: {Regex.Matches(allText.Text, tbxFind.Text).Count}  ";
-                for (TextPointer matchBeginPointer = rtbEditor.Document.ContentStart;
-                    matchBeginPointer.CompareTo(rtbEditor.Document.ContentEnd) < 0;
-                    matchBeginPointer = matchBeginPointer.GetNextContextPosition(LogicalDirection.Forward))
+                TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+                allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
+                if (string.IsNullOrWhiteSpace(allText.Text) || string.IsNullOrWhiteSpace(tbxFind.Text))
                 {
-                    int matchBeginOffset;
-                    do
+                    tbStatus.Text = "Zadna shoda";
+                }
+                else
+                {
+                    tbStatus.Text = $"  Pocet shod: {Regex.Matches(allText.Text, tbxFind.Text).Count}  ";
+                    for (TextPointer matchBeginPointer = rtbEditor.Document.ContentStart;
+                        matchBeginPointer.CompareTo(rtbEditor.Document.ContentEnd) < 0;
+                        matchBeginPointer = matchBeginPointer.GetNextContextPosition(LogicalDirection.Forward))
                     {
-                        string textAfterStartMatchPointer = matchBeginPointer.GetTextInRun(LogicalDirection.Forward);
-                        matchBeginOffset = textAfterStartMatchPointer.IndexOf(tbxFind.Text);
-                        if (matchBeginOffset >= 0)
+                        int matchBeginOffset;
+                        do
                         {
-                            matchBeginPointer = matchBeginPointer.GetPositionAtOffset(matchBeginOffset);
-                            TextRange matchRange = new TextRange(matchBeginPointer, matchBeginPointer.GetPositionAtOffset(tbxFind.Text.Length));
-                            if (replace)
+                            string textAfterStartMatchPointer = matchBeginPointer.GetTextInRun(LogicalDirection.Forward);
+                            matchBeginOffset = textAfterStartMatchPointer.IndexOf(tbxFind.Text);
+                            if (matchBeginOffset >= 0)
                             {
-                                matchRange.Text = tbxReplace.Text;
-                            }                          
+                                matchBeginPointer = matchBeginPointer.GetPositionAtOffset(matchBeginOffset);
+                                TextRange matchRange = new TextRange(matchBeginPointer, matchBeginPointer.GetPositionAtOffset(tbxFind.Text.Length));
+                                if (replace)
+                                {
+                                    matchRange.Text = tbxReplace.Text;
+                                }
                             matchRange.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.Yellow));
-                            findWordsSelected = true;
-                        }
-                    } while (matchBeginOffset >= 0 && replace);
+                            }
+                        } while (matchBeginOffset >= 0 && replace);
+                    }
                 }
             }
         }
@@ -706,6 +703,7 @@ namespace RichTextBoxEditor
             rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, pColor.Fill);
             rtbEditor.Focus();
         }
+
         
     }
 }
