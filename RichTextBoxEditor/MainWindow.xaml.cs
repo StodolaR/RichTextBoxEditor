@@ -326,7 +326,7 @@ namespace RichTextBoxEditor
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Dokument nelze načíst" + Environment.NewLine + ex);
+                MessageBox.Show("Dokument nelze načíst" + Environment.NewLine + ex.Message);
             }
         }
 
@@ -434,32 +434,6 @@ namespace RichTextBoxEditor
         }
 
         //MenuItem Upravy
-
-        //MenuItem Zpet
-        private void CbUndo_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (rtbEditor != null)
-            {
-                e.CanExecute = rtbEditor.CanUndo;
-            }
-        }
-        private void CbUndo_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            rtbEditor.Undo();
-        }
-
-        //MenuItem Vpred
-        private void CbRedo_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (rtbEditor != null)
-            {
-                e.CanExecute = rtbEditor.CanRedo;
-            }
-        }
-        private void CbRedo_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            rtbEditor.Redo();
-        }
 
         //MenuItem Najit
         private void CbFind_Executed(object sender, ExecutedRoutedEventArgs e)

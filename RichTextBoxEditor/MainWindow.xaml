@@ -14,8 +14,6 @@
         <CommandBinding x:Name="cbSaveAs" Command="ApplicationCommands.SaveAs" Executed="CbSaveAs_Executed"/>
         <CommandBinding x:Name="cbClose" Command="ApplicationCommands.Close" Executed="CbClose_Executed"/>
         <CommandBinding x:Name="cbProperties" Command="ApplicationCommands.Properties" Executed="CbProperties_Executed"/>
-        <CommandBinding x:Name="cbUndo" Command="ApplicationCommands.Undo" Executed="CbUndo_Executed" CanExecute="CbUndo_CanExecute"/>
-        <CommandBinding x:Name="cbRedo" Command="ApplicationCommands.Redo" Executed="CbRedo_Executed" CanExecute="CbRedo_CanExecute"/>
         <CommandBinding x:Name="cbFind" Command="ApplicationCommands.Find" Executed="CbFind_Executed"/>
         <CommandBinding x:Name="cbReplace" Command="ApplicationCommands.Replace" Executed="CbReplace_Executed"/>
     </Window.CommandBindings>
@@ -42,8 +40,8 @@
                 <MenuItem Header="Ukončit" Command="ApplicationCommands.Close" Icon="{StaticResource iClose}"/>
             </MenuItem>
             <MenuItem Header="Úpravy">
-                <MenuItem Header="Zpět" Command="ApplicationCommands.Undo" Icon="{StaticResource iUndo}"/>
-                <MenuItem Header="Vpřed" Command="ApplicationCommands.Redo" Icon="{StaticResource iRedo}"/> 
+                <MenuItem Header="Zpět" Command="ApplicationCommands.Undo" Icon="{StaticResource iUndo}" CommandTarget="{Binding ElementName=rtbEditor}"/>
+                <MenuItem Header="Vpřed" Command="ApplicationCommands.Redo" Icon="{StaticResource iRedo}" CommandTarget="{Binding ElementName=rtbEditor}"/> 
                 <Separator/>
                 <MenuItem Header="Vyjmout" Command="ApplicationCommands.Cut" Icon="{StaticResource iCut}"/>
                 <MenuItem Header="Kopírovat" Command="ApplicationCommands.Copy" Icon="{StaticResource iCopy}"/>
@@ -86,8 +84,10 @@
             <Button x:Name="btnOpen" ToolTip="Otevřít (Ctrl+O)" Command="ApplicationCommands.Open" Content="{StaticResource iOpen2}"/>
             <Button x:Name="btnSave" ToolTip="Uložit (Ctrl+S)" Command="ApplicationCommands.Save" Content="{StaticResource iSave2}"/>
             <Separator/>
-            <Button x:Name="btnUndo" ToolTip="Zpět (Ctrl+Z)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Undo" Content="{StaticResource iUndo2}"/>
-            <Button x:Name="btnRedo" ToolTip="Vpřed (Ctrl+Y)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Redo" Content="{StaticResource iRedo2}"/>
+            <Button x:Name="btnUndo" ToolTip="Zpět (Ctrl+Z)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Undo" 
+                    Content="{StaticResource iUndo2}" CommandTarget="{Binding ElementName=rtbEditor}"/>
+            <Button x:Name="btnRedo" ToolTip="Vpřed (Ctrl+Y)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Redo" 
+                    Content="{StaticResource iRedo2}" CommandTarget="{Binding ElementName=rtbEditor}"/>
             <Separator/>
             <Button x:Name="btnCut" ToolTip="Vyjmout (Ctrl+X)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Cut" Content="{StaticResource iCut2}"/>
             <Button x:Name="btnCopy" ToolTip="Kopírovat (Ctrl+C)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Copy" Content="{StaticResource iCopy2}"/>
