@@ -40,8 +40,10 @@
                 <MenuItem Header="Ukončit" Command="ApplicationCommands.Close" Icon="{StaticResource iClose}"/>
             </MenuItem>
             <MenuItem Header="Úpravy">
-                <MenuItem Header="Zpět" Command="ApplicationCommands.Undo" Icon="{StaticResource iUndo}" CommandTarget="{Binding ElementName=rtbEditor}"/>
-                <MenuItem Header="Vpřed" Command="ApplicationCommands.Redo" Icon="{StaticResource iRedo}" CommandTarget="{Binding ElementName=rtbEditor}"/> 
+                <MenuItem Header="Zpět" Command="ApplicationCommands.Undo" Icon="{StaticResource iUndo}" 
+                          CommandTarget="{Binding ElementName=rtbEditor}" Click="UndoRedo_Click"/>
+                <MenuItem Header="Vpřed" Command="ApplicationCommands.Redo" Icon="{StaticResource iRedo}" 
+                          CommandTarget="{Binding ElementName=rtbEditor}" Click="UndoRedo_Click"/> 
                 <Separator/>
                 <MenuItem Header="Vyjmout" Command="ApplicationCommands.Cut" Icon="{StaticResource iCut}"/>
                 <MenuItem Header="Kopírovat" Command="ApplicationCommands.Copy" Icon="{StaticResource iCopy}"/>
@@ -85,9 +87,9 @@
             <Button x:Name="btnSave" ToolTip="Uložit (Ctrl+S)" Command="ApplicationCommands.Save" Content="{StaticResource iSave2}"/>
             <Separator/>
             <Button x:Name="btnUndo" ToolTip="Zpět (Ctrl+Z)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Undo" 
-                    Content="{StaticResource iUndo2}" CommandTarget="{Binding ElementName=rtbEditor}"/>
+                    Content="{StaticResource iUndo2}" CommandTarget="{Binding ElementName=rtbEditor}" Click="UndoRedo_Click"/>
             <Button x:Name="btnRedo" ToolTip="Vpřed (Ctrl+Y)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Redo" 
-                    Content="{StaticResource iRedo2}" CommandTarget="{Binding ElementName=rtbEditor}"/>
+                    Content="{StaticResource iRedo2}" CommandTarget="{Binding ElementName=rtbEditor}" Click="UndoRedo_Click"/>
             <Separator/>
             <Button x:Name="btnCut" ToolTip="Vyjmout (Ctrl+X)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Cut" Content="{StaticResource iCut2}"/>
             <Button x:Name="btnCopy" ToolTip="Kopírovat (Ctrl+C)" ToolTipService.ShowOnDisabled="True" Command="ApplicationCommands.Copy" Content="{StaticResource iCopy2}"/>

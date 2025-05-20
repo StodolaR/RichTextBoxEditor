@@ -187,7 +187,6 @@ namespace RichTextBoxEditor
                 changeAlignBeforeEdit = false;
             }
             ActualizeButtonsByFont();
-
         }
         private void rtbEditor_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -196,6 +195,10 @@ namespace RichTextBoxEditor
             {
                 allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
             }
+            actualizeButtonsBool = true;
+        }
+        private void UndoRedo_Click(object sender, RoutedEventArgs e)
+        {
             actualizeButtonsBool = true;
         }
 
