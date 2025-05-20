@@ -218,13 +218,13 @@ namespace RichTextBoxEditor
                 filePath = string.Empty;
             }
             mainWindow.Title = "Bez názvu";
-            edited = false;
-            firstEdit = true;
+            edited = false;           
             UncheckAlignMenuItems();
             btnALeft.IsChecked = miALeft.IsChecked = true;
             ResetNewDocumentFont();
             rtbEditor.IsUndoEnabled = false;
             rtbEditor.IsUndoEnabled = true;
+            firstEdit = true;
         }
         private void ResetNewDocumentFont()
         {
@@ -295,8 +295,6 @@ namespace RichTextBoxEditor
             {
                 OpenFile(ofd.FileName);
             }
-            rtbEditor.IsUndoEnabled = false;
-            rtbEditor.IsUndoEnabled = true;
         }
         private void OpenFile(string openFilePath)
         {
@@ -306,6 +304,32 @@ namespace RichTextBoxEditor
                 {
                     TextRange allDocument = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
                     allDocument.Load(fs, DataFormats.Rtf);
+                    if (rtbEditor.Document.Blocks.Count > 0 )
+                    {
+                        foreach (var block in rtbEditor.Document.Blocks)
+                        {
+                            if(block is Paragraph && ((Paragraph)block).Inlines.Count > 0)
+                            {
+                                foreach (var inline in ((Paragraph)block).Inlines)
+                                {
+                                    if (inline is Span && ((Span)inline).Inlines.Count > 0 && inline.TextDecorations.Count > 0 && 
+                                        inline.TextDecorations.Contains(TextDecorations.Underline[0]))
+                                    {
+                                        TextDecorationCollection noUnder = new TextDecorationCollection();
+                                        inline.TextDecorations.Clear();
+                                        inline.TextDecorations.Add(noUnder);
+                                        foreach (var underInline in ((Span)inline).Inlines)
+                                        {
+                                            TextDecorationCollection under = new TextDecorationCollection();
+                                            under.Add(TextDecorations.Underline);
+                                            underInline.TextDecorations.Add(under);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     if (filePath != string.Empty && filePath != openFilePath)
                     {
                         AddToLastDocs();
@@ -313,6 +337,8 @@ namespace RichTextBoxEditor
                     filePath = openFilePath;
                     mainWindow.Title = System.IO.Path.GetFileName(openFilePath);
                     edited = false;
+                    rtbEditor.IsUndoEnabled = false;
+                    rtbEditor.IsUndoEnabled = true;
                     if (rtbEditor.Document.ContentStart.GetPositionAtOffset(4) != null)
                     {
                         actualizeButtonsBool = true;
@@ -321,9 +347,11 @@ namespace RichTextBoxEditor
                         ActualizeFontByButtons();
                     }
                     else
-                    {
+                    {                        
                         ResetNewDocumentFont();
+                        firstEdit = true;
                         rtbEditor.CaretPosition = rtbEditor.Document.ContentStart;
+                        ActualizeButtonsByFont();
                     }
                 }                   
             }
@@ -681,6 +709,5 @@ namespace RichTextBoxEditor
             rtbEditor.Focus();
         }
 
-        
     }
 }
