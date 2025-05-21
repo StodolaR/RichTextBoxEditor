@@ -49,7 +49,7 @@
                 <MenuItem Header="Kopírovat" Command="ApplicationCommands.Copy" Icon="{StaticResource iCopy}"/>
                 <MenuItem Header="Vložit" Command="ApplicationCommands.Paste" Icon="{StaticResource iPaste}"/>
                 <Separator/>
-                <MenuItem Header="Vybrat vše" Click="MenuItem_Click" Icon="{StaticResource iSelectAll}"/>
+                <MenuItem Header="Vybrat vše" Name="miSelectAll" Click="MiSelectAll_Click" Icon="{StaticResource iSelectAll}"/>
                     <Separator/>
                 <MenuItem Header="Najít" Command="ApplicationCommands.Find" Icon="{StaticResource iFind}"/>
                 <MenuItem Header="Nahradit" Command="ApplicationCommands.Replace" Icon="{StaticResource iReplace}"/>
@@ -117,7 +117,7 @@
                           CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iUnderline2}" Click="BtnUnderline_Click"/>
             <Separator/>
             <Grid>
-                <ComboBox Name="cbPalette" ToolTip="Vyber barvu" Width="44" SelectionChanged="cbPalette_SelectionChanged" DropDownClosed="cbPalette_DropDownClosed">
+                <ComboBox Name="cbPalette" ToolTip="Vyber barvu" Width="44" SelectionChanged="CbPalette_SelectionChanged" DropDownClosed="CbPalette_DropDownClosed">
                     <ComboBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="3" Rows="7"/>
@@ -129,7 +129,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <Button x:Name="btnColor" ToolTip="Barva písma" HorizontalAlignment="Left" Click="btnColor_Click">
+                <Button x:Name="btnColor" ToolTip="Barva písma" HorizontalAlignment="Left" Click="BtnColor_Click">
                     <StackPanel>
                         <Image Source="/Resources/Icons/LetterA.png" Width="13" Margin="0,0,0,1"/>
                         <Path Data="M 0 0 H 20 V 7 H 0 Z" Fill="Black" x:Name="pColor"/>

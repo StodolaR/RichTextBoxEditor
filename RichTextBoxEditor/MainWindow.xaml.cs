@@ -136,7 +136,7 @@ namespace RichTextBoxEditor
             }
             else
             {
-                cbFFamily.Text = temp.ToString();
+                cbFFamily.SelectedItem = temp;
             }
             temp = rtbEditor.Selection.GetPropertyValue(Inline.FontSizeProperty);
             if (temp == DependencyProperty.UnsetValue)
@@ -205,10 +205,7 @@ namespace RichTextBoxEditor
                 pColor.Fill = lastColor;
             }
         }
-        private void UndoRedo_Click(object sender, RoutedEventArgs e)
-        {
-            actualizeButtonsBool = true;
-        }
+        
 
         // MemuItem Soubor
 
@@ -474,6 +471,12 @@ namespace RichTextBoxEditor
 
         //MenuItem Upravy
 
+        //MenuItem Undo Redo
+        private void UndoRedo_Click(object sender, RoutedEventArgs e)
+        {
+            actualizeButtonsBool = true;
+        }
+
         //MenuItem Najit
         private void CbFind_Executed(object sender, ExecutedRoutedEventArgs e)
         {
@@ -705,7 +708,7 @@ namespace RichTextBoxEditor
             }
             return colors;
         }
-        private void cbPalette_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CbPalette_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbPalette.SelectedItem != null)
             {
@@ -715,18 +718,18 @@ namespace RichTextBoxEditor
             }
             rtbEditor.Focus();
         }
-        private void btnColor_Click(object sender, RoutedEventArgs e)
+        private void BtnColor_Click(object sender, RoutedEventArgs e)
         {
             rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, pColor.Fill);
             rtbEditor.Focus();
         }
 
-        private void cbPalette_DropDownClosed(object sender, EventArgs e)
+        private void CbPalette_DropDownClosed(object sender, EventArgs e)
         {
             rtbEditor.Focus();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void MiSelectAll_Click(object sender, RoutedEventArgs e)
         {
             rtbEditor.Selection.Select(rtbEditor.Document.Blocks.First().ContentStart, rtbEditor.Document.Blocks.Last().ContentEnd);
         }
