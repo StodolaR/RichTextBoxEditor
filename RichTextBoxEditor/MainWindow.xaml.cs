@@ -725,7 +725,7 @@ namespace RichTextBoxEditor
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            rtbEditor.SelectAll();
+            rtbEditor.Selection.Select(rtbEditor.Document.Blocks.First().ContentStart, rtbEditor.Document.Blocks.Last().ContentEnd);
         }
     }
 }
