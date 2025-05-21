@@ -704,9 +704,12 @@ namespace RichTextBoxEditor
         }
         private void cbPalette_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            actualColor = (SolidColorBrush)cbPalette.SelectedItem;
-            rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, actualColor);
-            pColor.Fill = actualColor;
+            if (cbPalette.SelectedItem != null)
+            {
+                actualColor = (SolidColorBrush)cbPalette.SelectedItem;
+                rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, actualColor);
+                pColor.Fill = actualColor;
+            }
             rtbEditor.Focus();
         }
         private void btnColor_Click(object sender, RoutedEventArgs e)
@@ -718,6 +721,11 @@ namespace RichTextBoxEditor
         private void cbPalette_DropDownClosed(object sender, EventArgs e)
         {
             rtbEditor.Focus();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            rtbEditor.SelectAll();
         }
     }
 }
