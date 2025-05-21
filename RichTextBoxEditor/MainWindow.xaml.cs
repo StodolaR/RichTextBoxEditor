@@ -129,6 +129,7 @@ namespace RichTextBoxEditor
         }
         private void ActualizeButtonsByFont() 
         {
+            actualizeButtonsBool = true;
             object temp = rtbEditor.Selection.GetPropertyValue(Inline.FontFamilyProperty);
             if (temp == DependencyProperty.UnsetValue)
             {
@@ -173,6 +174,7 @@ namespace RichTextBoxEditor
                 btnARight.IsChecked = miARight.IsChecked = temp.Equals(TextAlignment.Right);
                 btnAJustify.IsChecked = miAJustify.IsChecked = temp.Equals(TextAlignment.Justify);
             }
+            actualizeButtonsBool = false;
         }
         private void RtbEditor_KeyUp(object sender, KeyEventArgs e)
         {
@@ -662,6 +664,7 @@ namespace RichTextBoxEditor
         //Combobox FontFamily
         private void CbFFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (actualizeButtonsBool) return;
             rtbEditor.Selection.ApplyPropertyValue(FontFamilyProperty, cbFFamily.SelectedItem);
             rtbEditor.Focus();
         }
