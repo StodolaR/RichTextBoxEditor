@@ -171,7 +171,7 @@
             </StatusBarItem>
         </StatusBar>
         <RichTextBox ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="rtbEditor" SelectionChanged="RtbEditor_SelectionChanged" 
-                     KeyUp="RtbEditor_KeyUp" PreviewMouseLeftButtonDown="rtbEditor_PreviewMouseLeftButtonDown"  Padding="5,10" TextChanged="rtbEditor_TextChanged">
+                     KeyUp="RtbEditor_KeyUp" PreviewMouseLeftButtonDown="RtbEditor_PreviewMouseLeftButtonDown"  Padding="5,10" TextChanged="RtbEditor_TextChanged">
             <RichTextBox.Resources>
                 <Style TargetType="Paragraph">
                     <Setter Property="Margin" Value="0,5,0,0"/>

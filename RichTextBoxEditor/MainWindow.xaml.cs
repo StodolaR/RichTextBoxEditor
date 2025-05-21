@@ -26,10 +26,9 @@ namespace RichTextBoxEditor
         private bool edited;
         private bool firstEdit;
         private bool changeAlignBeforeEdit;
-        private bool actualizeFontBool;
         private bool actualizeButtonsBool;
         private SolidColorBrush actualColor;
-        private SolidColorBrush markColor = Brushes.Yellow;
+        private SolidColorBrush markColor;
         public MainWindow()
         {
             InitializeComponent();
@@ -42,10 +41,12 @@ namespace RichTextBoxEditor
             cbPalette.ItemsSource = colors;
             cbPalette.SelectedIndex = 0;
             actualColor = (SolidColorBrush)cbPalette.SelectedItem;
+            markColor = Brushes.Yellow;
             rtbEditor.Focus();
         }
-       
-        private void rtbEditor_TextChanged(object sender, TextChangedEventArgs e)
+        
+        //Události rtbEditoru
+        private void RtbEditor_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (changeAlignBeforeEdit)
             {
@@ -64,8 +65,7 @@ namespace RichTextBoxEditor
                 rtbEditor.Selection.Select(rtbEditor.CaretPosition.Paragraph.ContentStart, rtbEditor.CaretPosition.Paragraph.ContentEnd);
                 ActualizeFontByButtons();
                 rtbEditor.CaretPosition = rtbEditor.CaretPosition.Paragraph.ContentEnd;
-            }
-            
+            }           
             firstEdit = false;
         }
         
@@ -113,11 +113,6 @@ namespace RichTextBoxEditor
             {
                 ActualizeButtonsByFont();
             }
-            if (actualizeFontBool)
-            {
-                ActualizeFontByButtons();
-            }
-            actualizeButtonsBool = actualizeFontBool = false;
         }
         private void GetStatus()
         {
@@ -131,23 +126,9 @@ namespace RichTextBoxEditor
         {
             actualizeButtonsBool = true;
             object temp = rtbEditor.Selection.GetPropertyValue(Inline.FontFamilyProperty);
-            if (temp == DependencyProperty.UnsetValue)
-            {
-                cbFFamily.Text = string.Empty;
-            }
-            else
-            {
-                cbFFamily.SelectedItem = temp;
-            }
+            cbFFamily.SelectedItem = temp;
             temp = rtbEditor.Selection.GetPropertyValue(Inline.FontSizeProperty);
-            if (temp == DependencyProperty.UnsetValue)
-            {
-                cbFSize.Text = string.Empty;
-            }
-            else
-            {
-                cbFSize.Text = temp.ToString();
-            }
+            cbFSize.Text = temp.ToString();
             temp = rtbEditor.Selection.GetPropertyValue(Inline.FontWeightProperty);
             btnBold.IsChecked = miBold.IsChecked = temp != DependencyProperty.UnsetValue && temp.Equals(FontWeights.Bold);
             temp = rtbEditor.Selection.GetPropertyValue(Inline.FontStyleProperty);
@@ -191,7 +172,7 @@ namespace RichTextBoxEditor
             }
             ActualizeButtonsByFont();
         }
-        private void rtbEditor_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void RtbEditor_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
             object? temp = allText.GetPropertyValue(TextElement.BackgroundProperty);
@@ -336,7 +317,6 @@ namespace RichTextBoxEditor
                             }
                         }
                     }
-
                     if (filePath != string.Empty && filePath != openFilePath)
                     {
                         AddToLastDocs();
@@ -473,10 +453,16 @@ namespace RichTextBoxEditor
 
         //MenuItem Upravy
 
-        //MenuItem Undo Redo
+        //MenuItem Zpet Vpred
         private void UndoRedo_Click(object sender, RoutedEventArgs e)
         {
             actualizeButtonsBool = true;
+        }
+
+        //MenuItem Vybrat vse
+        private void MiSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            rtbEditor.Selection.Select(rtbEditor.Document.Blocks.First().ContentStart, rtbEditor.Document.Blocks.Last().ContentEnd);
         }
 
         //MenuItem Najit
@@ -726,15 +712,9 @@ namespace RichTextBoxEditor
             rtbEditor.Selection.ApplyPropertyValue(ForegroundProperty, pColor.Fill);
             rtbEditor.Focus();
         }
-
         private void CbPalette_DropDownClosed(object sender, EventArgs e)
         {
             rtbEditor.Focus();
-        }
-
-        private void MiSelectAll_Click(object sender, RoutedEventArgs e)
-        {
-            rtbEditor.Selection.Select(rtbEditor.Document.Blocks.First().ContentStart, rtbEditor.Document.Blocks.Last().ContentEnd);
         }
     }
 }
