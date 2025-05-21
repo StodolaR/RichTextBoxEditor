@@ -29,6 +29,7 @@ namespace RichTextBoxEditor
         private bool actualizeFontBool;
         private bool actualizeButtonsBool;
         private SolidColorBrush actualColor;
+        private SolidColorBrush markColor = Brushes.Yellow;
         public MainWindow()
         {
             InitializeComponent();
@@ -191,9 +192,8 @@ namespace RichTextBoxEditor
         private void rtbEditor_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            if (allText.GetPropertyValue(TextElement.BackgroundProperty) != null && 
-                (allText.GetPropertyValue(TextElement.BackgroundProperty) == DependencyProperty.UnsetValue ||
-                allText.GetPropertyValue(TextElement.BackgroundProperty).Equals(Brushes.Yellow)))
+            object? temp = allText.GetPropertyValue(TextElement.BackgroundProperty);
+            if (temp != null && (temp == DependencyProperty.UnsetValue || temp.Equals(markColor)))
             {
                 allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
             }
@@ -519,7 +519,7 @@ namespace RichTextBoxEditor
                                     matchRange.Text = tbxReplace.Text;
                                     matchBeginPointer = matchRange.End;
                                 }
-                                matchRange.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.Yellow));
+                                matchRange.ApplyPropertyValue(TextElement.BackgroundProperty, markColor);
                             }
                         } while (matchBeginOffset >= 0 && replace);
                     }
