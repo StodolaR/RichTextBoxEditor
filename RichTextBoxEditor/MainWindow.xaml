@@ -117,7 +117,7 @@
                           CommandTarget="{Binding ElementName=rtbEditor}" Content="{StaticResource iUnderline2}" Click="BtnUnderline_Click"/>
             <Separator/>
             <Grid>
-                <ComboBox Name="cbPalette" ToolTip="Vyber barvu" Width="44" SelectionChanged="cbPalette_SelectionChanged">
+                <ComboBox Name="cbPalette" ToolTip="Vyber barvu" Width="44" SelectionChanged="cbPalette_SelectionChanged" DropDownClosed="cbPalette_DropDownClosed">
                     <ComboBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="3" Rows="7"/>

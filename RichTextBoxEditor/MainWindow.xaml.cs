@@ -196,6 +196,12 @@ namespace RichTextBoxEditor
                 allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
             }
             actualizeButtonsBool = true;
+            if (cbPalette.SelectedItem != null)
+            {
+                SolidColorBrush lastColor = (SolidColorBrush)cbPalette.SelectedItem;
+                cbPalette.SelectedItem = null;
+                pColor.Fill = lastColor;
+            }
         }
         private void UndoRedo_Click(object sender, RoutedEventArgs e)
         {
@@ -709,5 +715,9 @@ namespace RichTextBoxEditor
             rtbEditor.Focus();
         }
 
+        private void cbPalette_DropDownClosed(object sender, EventArgs e)
+        {
+            rtbEditor.Focus();
+        }
     }
 }
