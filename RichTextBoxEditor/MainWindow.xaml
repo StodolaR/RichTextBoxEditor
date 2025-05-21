@@ -148,7 +148,7 @@
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom" Height="25">
             <StatusBarItem>
-                <StackPanel Orientation="Horizontal" Width="250">
+                <StackPanel Orientation="Horizontal" Width="210">
                     <TextBlock Text="Znaků: "/>
                     <TextBlock x:Name="tbChars"/>
                     <TextBlock Text="  Slov: "/>

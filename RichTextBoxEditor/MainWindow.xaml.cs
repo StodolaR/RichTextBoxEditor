@@ -191,7 +191,9 @@ namespace RichTextBoxEditor
         private void rtbEditor_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            if ((SolidColorBrush)allText.GetPropertyValue(TextElement.BackgroundProperty) != new SolidColorBrush(Colors.White))
+            if (allText.GetPropertyValue(TextElement.BackgroundProperty) != null && 
+                (allText.GetPropertyValue(TextElement.BackgroundProperty) == DependencyProperty.UnsetValue ||
+                allText.GetPropertyValue(TextElement.BackgroundProperty).Equals(Brushes.Yellow)))
             {
                 allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
             }
@@ -494,7 +496,7 @@ namespace RichTextBoxEditor
                 allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
                 if (string.IsNullOrWhiteSpace(allText.Text) || string.IsNullOrWhiteSpace(tbxFind.Text))
                 {
-                    tbStatus.Text = "Zadna shoda";
+                    tbStatus.Text = " Žádná shoda ";
                 }
                 else
                 {
@@ -508,15 +510,16 @@ namespace RichTextBoxEditor
                         {
                             string textAfterStartMatchPointer = matchBeginPointer.GetTextInRun(LogicalDirection.Forward);
                             matchBeginOffset = textAfterStartMatchPointer.IndexOf(tbxFind.Text);
-                            if (matchBeginOffset >= 0)
+                            if (matchBeginOffset >= 0 )
                             {
                                 matchBeginPointer = matchBeginPointer.GetPositionAtOffset(matchBeginOffset);
                                 TextRange matchRange = new TextRange(matchBeginPointer, matchBeginPointer.GetPositionAtOffset(tbxFind.Text.Length));
                                 if (replace)
                                 {
                                     matchRange.Text = tbxReplace.Text;
+                                    matchBeginPointer = matchRange.End;
                                 }
-                            matchRange.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.Yellow));
+                                matchRange.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.Yellow));
                             }
                         } while (matchBeginOffset >= 0 && replace);
                     }
