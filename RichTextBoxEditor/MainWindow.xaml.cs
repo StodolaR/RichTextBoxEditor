@@ -191,7 +191,7 @@ namespace RichTextBoxEditor
         private void rtbEditor_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TextRange allText = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            if (allText.GetPropertyValue(TextElement.BackgroundProperty) == DependencyProperty.UnsetValue)
+            if ((SolidColorBrush)allText.GetPropertyValue(TextElement.BackgroundProperty) != new SolidColorBrush(Colors.White))
             {
                 allText.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.White));
             }
