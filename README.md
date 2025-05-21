@@ -1,9 +1,41 @@
 # RichTextBoxEditor
 Textový editor založený na RichTextBox a ApplicationCommands
 ## Screenshots
-![Po spuštění](https://github.com/StodolaR/RichTextBoxEditor/blob/master/Screenshots/Sn%C3%ADmek%20obrazovky%202025-05-21%20214537.png)
-![Menu](https://github.com/StodolaR/RichTextBoxEditor/blob/master/Screenshots/Sn%C3%ADmek%20obrazovky%202025-05-21%20214621.png)
-![Ukázka](https://github.com/StodolaR/RichTextBoxEditor/blob/master/Screenshots/Sn%C3%ADmek%20obrazovky%202025-05-21%20215837.png)
-# Popis funkcí editoru
+![Po spuštění](https://github.com/StodolaR/RichTextBoxEditor/blob/master/Screenshots/PoSpusteni.png)
+![Menu](https://github.com/StodolaR/RichTextBoxEditor/blob/master/Screenshots/Menu.png)
+![Ukázka](https://github.com/StodolaR/RichTextBoxEditor/blob/master/Screenshots/Ukazka.png)
+# Funkce editoru
+- Soubor
+  - Nový
+  - Otevřít
+  - Poslední dokumenty
+  - Uložit
+  - Uložit jako
+  - Vlastnosti
+  - Ukončit
+- Úpravy
+  - Zpět
+  - Vpřed
+  - Vyjmout
+  - Kopírovat
+  - Vložit
+  - Vybrat vše
+  - Najít
+  - Nahradit
+- Formát
+  - Písmo
+    - Tučné
+    - Kurzíva
+    - Podtržené
+  - Zarovnání
+    - Vlevo
+    - Na střed
+    - Vpravo
+    - Do bloku
+- Comboboxy
+  - Druh písma (FontFamily)
+  - Velikost písma
+  - Barva písma
+  
 
 
